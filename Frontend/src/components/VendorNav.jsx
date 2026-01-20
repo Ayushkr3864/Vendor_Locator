@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import {
   Package,
   PlusCircle,
@@ -15,13 +15,10 @@ import { useEffect } from "react";
 import { color } from "framer-motion";
 
 export default function VendorNavbar() {
-  const { vendor, fetchUser,Logout } = useAuth();
-  useEffect(() => {
-    if(!vendor)
-    fetchUser()
-  }, [fetchUser])
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-const navigate = useNavigate()
+  const navigate = useNavigate()
+  const {Logout,vendor} = useAuth
   const handleLogout = () => {
     // Add your logout logic here
     Logout();
@@ -32,25 +29,25 @@ const navigate = useNavigate()
     {
       name: "Dashboard",
       icon: <Store size={20} />,
-      onClick: () => navigate("/vendorDash"),
+      to:"/vendorDash",
     color:"text-red-600"
   },
     {
       name: "Add Product",
       icon: <PlusCircle size={20} />,
-      onClick: () => navigate("/create/product"),
+     to:"/create/product",
       color: "text-blue-600",
     },
     {
       name: `${vendor?.isProfileComplete ? "Update Business" : "Register Business"}`,
       icon: <Briefcase size={20} />,
-      onClick: () => navigate("/registerBusiness"),
+      to:"/registerBusiness",
       color: "text-green-600",
     },
     {
       name: "Show Products",
       icon: <ShoppingBag size={20} />,
-      onClick: () => console.log("Navigate to Show Products"),
+     to: "/viewProduct",
       color: "text-purple-600",
     },
   ];
@@ -70,10 +67,12 @@ const navigate = useNavigate()
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => (
-              <button
+              <NavLink
                 key={index}
-                onClick={item.onClick}
-                className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100 transition-all duration-200 group"
+                to={item.to}
+                className={({ isActive }) =>
+                  `flex items-center space-x-2 px-4 py-2 rounded-lg ${isActive ? "bg-gray-300" : ""} hover:bg-gray-100 transition-all duration-200 group`
+                }
               >
                 <span
                   className={`${item.color} group-hover:scale-110 transition-transform`}
@@ -81,19 +80,12 @@ const navigate = useNavigate()
                   {item.icon}
                 </span>
                 <span className="text-gray-700 font-medium">{item.name}</span>
-              </button>
+              </NavLink>
             ))}
           </div>
 
           {/* User Info & Logout - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 px-4 py-2 bg-gray-100 rounded-lg">
-              <div className="w-8 h-8 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                {vendor?.name.charAt(0)}
-              </div>
-              <span className="text-gray-700 font-medium">{vendor?.name}</span>
-            </div>
-
             <button
               onClick={handleLogout}
               className="flex items-center space-x-2 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-200 hover:shadow-lg"
@@ -121,20 +113,15 @@ const navigate = useNavigate()
       >
         <div className="px-4 pt-2 pb-4 space-y-2 bg-gray-50 border-t border-gray-200">
           {/* User Info - Mobile */}
-          <div className="flex items-center space-x-3 p-3 bg-white rounded-lg mb-2">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-              {vendor?.vendorimg || vendor?.name.charAt(0)}
-            </div>
-            <span className="text-gray-700 font-medium">{vendor?.name}</span>
-          </div>
+        
 
           {/* Navigation Items - Mobile */}
           {navItems.map((item, index) => (
             <button
               key={index}
               onClick={() => {
-                item.onClick()
-                setIsMobileMenuOpen(false)
+                item.to();
+                setIsMobileMenuOpen(false);
               }}
               className="w-full flex items-center space-x-3 px-4 py-3 bg-white rounded-lg hover:bg-gray-100 transition-all duration-200"
             >

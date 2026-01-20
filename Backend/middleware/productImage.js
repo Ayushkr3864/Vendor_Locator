@@ -5,11 +5,11 @@ const multer = require("multer");
 const storage = new CloudinaryStorage({
     cloudinary,
     params: {
-        folder: "shopImage",
-      resource:"image"  
+        folder: "productImage",
+      resource_type:"image"  
     },
 })
 
-const shopUpload = multer({ storage });
-module.exports = shopUpload;
+const productUpload = multer({ storage });
+module.exports = productUpload;
 

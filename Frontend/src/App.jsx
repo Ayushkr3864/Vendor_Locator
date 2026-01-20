@@ -13,6 +13,7 @@ import Product from "./pages/vendor/Product";
 import ListProduct from "./pages/vendor/ListProduct";
 import Protected from "./components/Protected";
 import VendorShopForm from "./pages/vendor/UpdateProfile";
+import ShowProduct from "./pages/vendor/ShowProduct";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
 
           }
         ></Route>
+        <Route path="/viewProduct" element={<ShowProduct/>}></Route>
         <Route path="/registerBusiness" element={<VendorShopForm />}></Route>
         <Route path="/userDash" element={<UserDashboard />}></Route>
         <Route path="/create/product" element={<Product />}></Route>

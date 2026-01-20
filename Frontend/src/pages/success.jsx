@@ -10,6 +10,7 @@ const SuccessMessage = ({
   showSparkles = true,
   titleClassName = "text-3xl font-bold bg-gradient-to-r from-orange-600 to-pink-600 bg-clip-text text-transparent mt-6",
   messageClassName = "text-gray-600 mt-2 flex items-center gap-2",
+  bgColour = "bg-white/60", // Fixed: default prop name typo (colour vs color)
 }) => {
   return (
     <motion.div
@@ -17,7 +18,8 @@ const SuccessMessage = ({
       initial={{ scale: 0, rotate: -180 }}
       animate={{ scale: 1, rotate: 0 }}
       exit={{ scale: 0, rotate: 180 }}
-      className="relative z-10 flex flex-col items-center justify-center py-12"
+      className={`relative z-10 flex flex-col ${bgColour}  rounded-xl items-center justify-center p-12`}
+      // Fixed: removed template literal backticks around bgColour
     >
       <motion.div
         animate={{
@@ -52,4 +54,30 @@ const SuccessMessage = ({
   );
 };
 
-export default SuccessMessage;
+// Demo usage
+export default function App() {
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <div className="max-w-2xl mx-auto space-y-8">
+        {/* Default */}
+        <SuccessMessage />
+
+        {/* Custom background */}
+        <SuccessMessage
+          bgColour="bg-gradient-to-br from-green-50 to-blue-50"
+          title="Account Created!"
+          message="Welcome to our platform"
+        />
+
+        {/* Custom styling */}
+        <SuccessMessage
+          bgColour="bg-purple-50"
+          iconClassName="text-purple-500"
+          title="Payment Successful"
+          message="Your order has been confirmed"
+          showSparkles={false}
+        />
+      </div>
+    </div>
+  );
+}

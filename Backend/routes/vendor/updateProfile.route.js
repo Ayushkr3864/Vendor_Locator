@@ -2,7 +2,7 @@ const express = require("express");
 const isLoggedIn = require("../../middleware/isLoggedIn");
 const isVendor = require("../../middleware/vendorAuth");
 const updateProfile = require("../../controllers/vendor/updateProfile.controller");
-const shopUpload = require("../../middleware/shopImage");
+const shopUpload = require("../../middleware/productImage");
 const upload = require("../../middleware/upload");
 const app = express.Router();
 

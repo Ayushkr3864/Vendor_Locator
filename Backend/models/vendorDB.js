@@ -14,13 +14,13 @@ const vendorSchema = new mongoose.Schema(
     phone: {
       type: String,
       required: true,
-      unique: true,
     },
 
     email: {
       type: String,
       trim: true,
       lowercase: true,
+      unique: true,
     },
 
     password: {
@@ -34,7 +34,7 @@ const vendorSchema = new mongoose.Schema(
     },
 
     vendorimg: {
-      type: String, 
+      type: String,
     },
 
     /* =========================
@@ -78,11 +78,10 @@ const vendorSchema = new mongoose.Schema(
         type: [Number], // [longitude, latitude]
       },
     },
-    shopImage: 
-      {
+    shopImage: {
       type: String,
-      default:""// Shop images URLs
-      },
+      default: "", // Shop images URLs
+    },
     /* =========================
        STATUS & FLAGS
     ========================== */
@@ -93,12 +92,12 @@ const vendorSchema = new mongoose.Schema(
     },
     isActive: {
       type: Boolean,
-      default:false
-    }
+      default: false,
+    },
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 /* =========================
@@ -106,5 +105,5 @@ const vendorSchema = new mongoose.Schema(
 ========================== */
 
 // Geo index for nearby vendor search
-vendorSchema.index({ location: "2dsphere" });
+vendorSchema.index({ location: "2dsphere",email:1 });
 module.exports = mongoose.model("Vendor", vendorSchema);

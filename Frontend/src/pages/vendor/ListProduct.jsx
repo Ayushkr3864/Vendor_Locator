@@ -7,7 +7,6 @@ const ProductList = () => {
   // Modal state
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [addSuccess, setAddSuccess] = useState(false);
-
   // Fetch Products
     const fetchProducts = async () => {
       const Token = localStorage.getItem("token")
@@ -165,5 +164,4 @@ const ProductList = () => {
     </div>
   );
 };
-
 export default ProductList;

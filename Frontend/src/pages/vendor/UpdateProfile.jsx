@@ -69,57 +69,57 @@ export default function VendorShopForm() {
       reader.readAsDataURL(file);
     }
   };
-  const { vendor,fetchUser } = useAuth()
-  
-  useEffect(() => { fetchUser() }, [fetchUser]) 
-  const vendorId = vendor?._id
-  
-  
+  const { vendor, fetchUser } = useAuth();
+
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
+  const vendorId = vendor?._id;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-       if (image.length === 0) {
-      alert("Please upload at least one shop image");
-      return;
+      if (image.length === 0) {
+        alert("Please upload at least one shop image");
+        return;
       }
-      const newFormData = new FormData()
+      const newFormData = new FormData();
       newFormData.append("category", formData.category);
       newFormData.append("address", formData.address);
       newFormData.append("description", formData.description);
       if (image) {
         newFormData.append("shopImage", image);
       }
-    setLoading(true);
-    const res = await fetch(`${api}/updateProfile/${vendorId}`, {
-      method: "PUT",
-      credentials: "include",
-      body: newFormData,
-    });
-    const data = await res.json()
-    if(!res.ok) throw new Error("unable to update profile")
-    setTimeout(() => {
-      setLoading(false);
-      setSuccess(true);
-      console.log("Form submitted:", {
-        ...formData,
-        location,
-        imagesCount: image.length,
+      setLoading(true);
+      const res = await fetch(`${api}/updateProfile/${vendorId}`, {
+        method: "PUT",
+        credentials: "include",
+        body: newFormData,
       });
-
+      const data = await res.json();
+      if (!res.ok) throw new Error("unable to update profile");
       setTimeout(() => {
-        setSuccess(false);
-        setFormData({ category: "", description: "", address: "" });
-        setImage([]);
-        setPreview([]);
-        setCharCount(0);
-      }, 3000);
-    }, 2000);
+        setLoading(false);
+        setSuccess(true);
+        console.log("Form submitted:", {
+          ...formData,
+          location,
+          imagesCount: image.length,
+        });
+
+        setTimeout(() => {
+          setSuccess(false);
+          setFormData({ category: "", description: "", address: "" });
+          setImage([]);
+          setPreview([]);
+          setCharCount(0);
+        }, 3000);
+      }, 2000);
     } catch (e) {
       console.error(e.message);
-      
     } finally {
-      setLoading(false)
-      setSuccess(false)
+      setLoading(false);
+      setSuccess(false);
     }
   };
 

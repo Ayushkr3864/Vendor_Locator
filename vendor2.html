@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VendorFindr - Locate Local Professionals</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Apply the Inter font globally (Tailwind default) and ensure smooth scrolling */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f7f9fb; /* Light background for overall aesthetic */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Tailwind Configuration for custom colors if needed -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary': '#4f46e5', /* Indigo-600 */
+                        'primary-dark': '#4338ca', /* Indigo-700 */
+                        'secondary': '#10b981', /* Emerald-500 */
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- 1. Navigation Bar -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <!-- Logo/App Name -->
+            <a href="#" class="flex items-center space-x-2 text-xl font-bold text-primary transition duration-300 hover:text-primary-dark">
+                <i data-lucide="map-pin" class="w-6 h-6"></i>
+                <span>VendorFindr</span>
+            </a>
+
+            <!-- Navigation Links (Hidden on small screens, shown on medium and up) -->
+            <div class="hidden md:flex space-x-8 font-medium">
+                <a href="#features" class="text-gray-600 hover:text-primary transition duration-300">Features</a>
+                <a href="#how-it-works" class="text-gray-600 hover:text-primary transition duration-300">How It Works</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition duration-300">About</a>
+            </div>
+
+            <!-- CTA Button -->
+            <a href="#" class="hidden md:block bg-primary text-white px-4 py-2 rounded-lg font-semibold shadow-md hover:bg-primary-dark transition duration-300">
+                Start Searching
+            </a>
+
+            <!-- Mobile Menu Button (Optional, not functional in this static example) -->
+            <button class="md:hidden text-gray-600 hover:text-primary transition duration-300">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 2. Hero Section -->
+        <section class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-12 items-center">
+                <!-- Left Content -->
+                <div class="text-center md:text-left">
+                    <span class="text-sm font-semibold text-secondary uppercase tracking-wider mb-2 block">
+                        Your Local Connection
+                    </span>
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-gray-900 mb-6">
+                        Find <span class="text-primary">Trusted Vendors</span>, Instantly.
+                    </h1>
+                    <p class="text-lg text-gray-600 mb-8 max-w-lg mx-auto md:mx-0">
+                        From reliable plumbers to creative designers, VendorFindr connects you with highly-rated local professionals for any project.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <button class="bg-secondary text-white px-8 py-3 rounded-xl font-bold text-lg shadow-lg shadow-secondary/50 hover:bg-emerald-600 transition duration-300 transform hover:scale-[1.02]">
+                            Browse Categories
+                        </button>
+                        <button class="bg-white text-primary border border-primary px-8 py-3 rounded-xl font-bold text-lg shadow-md hover:bg-primary/5 transition duration-300">
+                            Watch Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Image/Mockup -->
+                <div class="flex justify-center">
+                    <img
+                        src="https://placehold.co/600x450/4f46e5/ffffff?text=Vendor+Locator+App+Mockup"
+                        alt="Vendor Locator App Interface Mockup"
+                        class="w-full max-w-md md:max-w-lg rounded-2xl shadow-2xl transition duration-500 hover:shadow-primary/30"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x450/4f46e5/ffffff?text=App+Preview'"
+                    />
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Features Section -->
+        <section id="features" class="py-16 md:py-24 bg-gray-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
+                        Why Choose VendorFindr?
+                    </h2>
+                    <p class="text-xl text-gray-600">
+                        Simple tools to make your hiring process fast and stress-free.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+
+                    <!-- Feature 1: Hyperlocal Search -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-primary">
+                        <div class="text-primary bg-primary/10 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i data-lucide="locate-fixed" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Hyperlocal Search</h3>
+                        <p class="text-gray-600">
+                            Filter vendors by precise location, ensuring you find professionals right in your neighborhood, not miles away.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2: Verified Reviews -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-secondary">
+                        <div class="text-secondary bg-secondary/10 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i data-lucide="message-square-check" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Verified Reviews</h3>
+                        <p class="text-gray-600">
+                            Only see genuine feedback from confirmed customers, giving you confidence in your hiring decision.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3: Project Management -->
+                    <div class="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 border-t-4 border-primary-dark">
+                        <div class="text-primary-dark bg-primary-dark/10 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-3">Save & Organize</h3>
+                        <p class="text-gray-600">
+                            Save favorite vendors, track quotes, and manage multiple job requests all within your personalized dashboard.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 4. Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+
+                <!-- Company Info -->
+                <div>
+                    <h4 class="text-lg font-bold mb-4 text-primary">VendorFindr</h4>
+                    <p class="text-gray-400 text-sm">Connecting you to the best local talent, one search at a time.</p>
+                </div>
+
+                <!-- Explore Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Explore</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#features" class="text-gray-400 hover:text-primary transition duration-300">Features</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition duration-300">Vendor Sign Up</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition duration-300">Help Center</a></li>
+                    </ul>
+                </div>
+
+                <!-- Legal Links -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition duration-300">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition duration-300">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition duration-300">License</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact & Social -->
+                <div>
+                    <h4 class="text-lg font-semibold mb-4 text-white">Follow Us</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                            <i data-lucide="instagram" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                            <i data-lucide="twitter" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition duration-300">
+                            <i data-lucide="facebook" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="border-t border-gray-700 pt-8 text-center text-sm text-gray-400">
+                &copy; <span id="current-year"></span> VendorFindr. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript to initialize Lucide icons and update year -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Update the current year in the footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

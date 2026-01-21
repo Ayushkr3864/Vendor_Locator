@@ -182,10 +182,10 @@ export default function VendorShopForm() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 w-full max-w-2xl relative z-10 border border-white/20"
+          className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 w-full max-w-2xl relative z-10 border border-white/20"
         >
           {/* Decorative elements */}
-          <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-orange-400 to-pink-500 rounded-full opacity-20 blur-xl" />
+          <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-br from-orange-400 z-10 to-pink-500 rounded-full opacity-20 blur-xl" />
           <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-br from-red-400 to-orange-500 rounded-full opacity-20 blur-xl" />
 
           <AnimatePresence mode="wait">
@@ -402,7 +402,7 @@ export default function VendorShopForm() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.9 }}
-                  className="text-xs text-gray-500 text-center font-medium"
+                  className="text-[15px] text-red-500 text-center font-medium"
                 >
                   All fields marked with{" "}
                   <span className="text-orange-600">●</span> are required

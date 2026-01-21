@@ -35,8 +35,6 @@ function ShowProduct() {
       setLoading(false);
     }
   };
-
-  // 🔹 Load products when page changes
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
@@ -84,7 +82,7 @@ function ShowProduct() {
                 </tr>
               )}
 
-              {!loading && products.length === 0 && (
+              {!loading && products?.length === 0 && (
                 <tr>
                   <td colSpan="5" className="p-4 text-center">
                     No products found
@@ -92,7 +90,7 @@ function ShowProduct() {
                 </tr>
               )}
 
-              {products.map((p, i) => (
+              {products?.map((p, i) => (
                 <tr
                   key={p._id}
                   className="border-b hover:bg-gray-50 transition"

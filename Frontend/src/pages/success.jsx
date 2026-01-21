@@ -55,29 +55,4 @@ const SuccessMessage = ({
 };
 
 // Demo usage
-export default function App() {
-  return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-2xl mx-auto space-y-8">
-        {/* Default */}
-        <SuccessMessage />
-
-        {/* Custom background */}
-        <SuccessMessage
-          bgColour="bg-gradient-to-br from-green-50 to-blue-50"
-          title="Account Created!"
-          message="Welcome to our platform"
-        />
-
-        {/* Custom styling */}
-        <SuccessMessage
-          bgColour="bg-purple-50"
-          iconClassName="text-purple-500"
-          title="Payment Successful"
-          message="Your order has been confirmed"
-          showSparkles={false}
-        />
-      </div>
-    </div>
-  );
-}
+export default SuccessMessage

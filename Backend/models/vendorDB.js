@@ -105,5 +105,5 @@ const vendorSchema = new mongoose.Schema(
 ========================== */
 
 // Geo index for nearby vendor search
-vendorSchema.index({ location: "2dsphere",email:1 });
+vendorSchema.index({ location: "2dsphere", email: 1, createdAt: 1 });
 module.exports = mongoose.model("Vendor", vendorSchema);

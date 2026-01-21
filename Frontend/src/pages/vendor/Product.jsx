@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import VendorNavbar from "../../components/VendorNav";
 import SuccessMessage from "../success";
 const api = import.meta.env.VITE_BACKEND_URL;
+import Toast from "../../components/Toast"
 
 const Tags = [
   "new",
@@ -71,7 +72,17 @@ const CreateProduct = () => {
         body: form,
       });
       const data = await res.json();
-      if (!res.ok) throw new Error("failde to add product");
+      if (!res.ok) {
+          if (!res.ok) {
+            settoastType("error");
+            setMessage(data.message || "Invalid email or password");
+            setShowtoast(true);
+            setTimeout(() => {
+              setShowtoast(false)
+            },2000)
+            return;
+          }
+      };
       setTimeout(() => {
         setSuccess(true);
         setTimeout(() => {
@@ -110,6 +121,8 @@ const CreateProduct = () => {
             "url('https://images.unsplash.com/photo-1481349518771-20055b2a7b24?auto=format&fit=crop&w=1950&q=80')",
         }}
       >
+        <Toast message={message} type={toastType} show={showtoast}/>
+        
         {/* Card animation */}
         {success ? (
           <SuccessMessage message={"Product Listed Successfully 🎉"} />

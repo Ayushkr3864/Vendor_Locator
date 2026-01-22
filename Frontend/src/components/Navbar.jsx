@@ -1,12 +1,31 @@
 import React, { useState,useEffect } from "react";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { LogIn, LogOut, Menu, X } from "lucide-react";
+import {
+  MapPin,
+  Search,
+  Eye,
+  GitCompare,
+  Navigation,
+  Target,
+  Shield,
+  Clock,
+  Zap,
+  Award,
+  TrendingUp,
+  Menu,
+  X,
+  Home,
+  Compass,
+  Users,
+  Phone,
+} from "lucide-react";
 import { useAuth } from "../store/auth";
 import Toast from "./Toast";
-function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+function Navbar({home}) {
   const navigate = useNavigate()
-  
+   const [scrollY, setScrollY] = useState(0);
+
+   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { checkAuth, isAuthenticated, loading, user, Logout, message, toastType, showtoast } = useAuth();
   useEffect(() => { checkAuth() }, [])
   console.log("authen",isAuthenticated);
@@ -22,217 +41,142 @@ function Navbar() {
     navigate("/")
 
   }
+    useEffect(() => {
+      const handleScroll = () => setScrollY(window.scrollY);
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
   return (
     <>
       <Toast message={message} type={toastType} show={showtoast} />
-      <header className="bg-linear-to-r from-blue-500 to-purple-600 shadow-lg w-full fixed top-0 z-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          {/* Logo */}
-          <h1 className="text-2xl md:text-3xl font-bold text-white">
-            Vendor<span className="text-amber-300">Track</span>
-          </h1>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex gap-8 font-medium text-lg">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `relative inline-block transition-transform duration-200 transform hover:scale-110 ${
-                  isActive ? "text-amber-300 scale-110" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  Home
-                  <span
-                    className={`absolute left-0 -bottom-1 h-0.5 w-full bg-amber-300 transition-transform duration-300 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/about"
-              className={({ isActive }) =>
-                `relative inline-block transition-transform duration-200 transform hover:scale-110 ${
-                  isActive ? "text-amber-300 scale-110" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  About
-                  <span
-                    className={`absolute left-0 -bottom-1 h-[2px] w-full bg-amber-300 transition-transform duration-300 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/features"
-              className={({ isActive }) =>
-                `relative inline-block transition-transform duration-200 transform hover:scale-110 ${
-                  isActive ? "text-amber-300 scale-110" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  Features
-                  <span
-                    className={`absolute left-0 -bottom-1 h-[2px] w-full bg-amber-300 transition-transform duration-300 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/how-it-works"
-              className={({ isActive }) =>
-                `relative inline-block transition-transform duration-200 transform hover:scale-110 ${
-                  isActive ? "text-amber-300 scale-110" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  How it Works
-                  <span
-                    className={`absolute left-0 -bottom-1 h-[2px] w-full bg-amber-300 transition-transform duration-300 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-
-            <NavLink
-              to="/contact"
-              className={({ isActive }) =>
-                `relative inline-block transition-transform duration-200 transform hover:scale-110 ${
-                  isActive ? "text-amber-300 scale-110" : "text-white"
-                }`
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  Contact
-                  <span
-                    className={`absolute left-0 -bottom-1 h-[2px] w-full bg-amber-300 transition-transform duration-300 ${
-                      isActive ? "scale-x-100" : "scale-x-0"
-                    }`}
-                  />
-                </>
-              )}
-            </NavLink>
-          </nav>
-
-          {/* Mobile Hamburger */}
-          <button
-            className="md:hidden text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X size={38} /> : <Menu size={38} />}
-          </button>
-          <div className="space-x-4 hidden md:flex">
-            <button
-              className="bg-gradient-to-r from-blue-200 to-indigo-300 hover:from-blue-600 hover:to-indigo-700 text-black hover:text-white px-6 py-3 rounded-lg shadow-lg cursor-pointer"
-              onClick={handleNavigate}
-            >
-              {isAuthenticated ? "Dashbaord" : "Register"}
-            </button>
-
-            {isAuthenticated ? (
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl transition"
-              >
-                <LogOut size={18}/>
-                Logout
-              </button>
-            ) : (
-              <button
-                className="bg-gradient-to-r flex from-yellow-300 items-center gap-3 to-pink-300 hover:from-yellow-400 hover:to-pink-400 text-black px-6 py-3 rounded-lg shadow-lg"
-                onClick={() => navigate("/Login")}
-              >
-                <LogIn size={18}  /> Login
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        {isOpen && (
-          <div className="md:hidden bg-gradient-to-r from-blue-500 to-purple-600 px-6 pb-4">
-            <ul className="flex flex-col gap-4 text-lg font-medium text-white">
-              <li>
-                <NavLink
-                  to="/"
-                  onClick={() => {
-                    setIsOpen(false);
-                  }}
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/About"
-                  onClick={() => {
-                    setIsOpen;
-                  }}
-                >
-                  About
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/About"
-                  onClick={() => {
-                    setIsOpen;
-                  }}
-                >
-                  Features
-                </NavLink>
-              </li>
-              <li>
-                <NavLink
-                  to="/About"
-                  onClick={() => {
-                    setIsOpen;
-                  }}
-                >
-                  Contact
-                </NavLink>
-              </li>
-            </ul>
-            <div class="space-x-4 w-full flex justify-center">
-              <Link
-                to="/Register"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-              >
-                <button class="bg-linear-to-r from-blue-200 to-indigo-300 hover:from-blue-600 hover:to-indigo-70 hover:text-white text-black px-6 py-3 rounded-lg shadow-lg">
-                  Register
-                </button>
-              </Link>
-              {/* <button class="bg-gradient-to-r from-pink-400 to-red-400 hover:from-pink-500 hover:to-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
-                Learn More
-              </button> */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrollY > 50
+            ? "backdrop-blur-xl bg-slate-900/80 border-b border-white/10 shadow-2xl"
+            : `${home == "true" ? "bg-transparent" : "bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 overflow-hidden"}`
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center gap-3 group cursor-pointer">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                  VendorHub
+                </h1>
+                <p className="text-xs text-blue-300">Find Local Vendors</p>
+              </div>
             </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center gap-8">
+              <a
+                href="#"
+                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
+              >
+                <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Home</span>
+              </a>
+              <a
+                href="#"
+                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
+              >
+                <Compass className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Explore</span>
+              </a>
+              <a
+                href="#"
+                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
+              >
+                <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">About</span>
+              </a>
+              <a
+                href="#"
+                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
+              >
+                <Phone className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                <span className="font-medium">Contact</span>
+              </a>
+            </div>
+
+            {/* CTA Button */}
+            <div className="hidden md:block">
+              <button className="group relative px-5 py-2.5 backdrop-blur-xl bg-white/10 border border-white/20 text-white font-semibold rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-105">
+                <span className="flex items-center gap-2">
+                  Join as Vendor
+                  <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                </span>
+              </button>
+              <button className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 overflow-hidden">
+                <span className="relative z-10 flex items-center gap-2">
+                  Get Started
+                  <Search className="w-4 h-4 group-hover:rotate-12 transition-transform" />
+                </span>
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </button>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden p-2 text-blue-100 hover:text-white transition-colors"
+            >
+              {isMobileMenuOpen ? (
+                <X className="w-6 h-6" />
+              ) : (
+                <Menu className="w-6 h-6" />
+              )}
+            </button>
           </div>
-        )}
-      </header>
+
+          {/* Mobile Menu */}
+          {isMobileMenuOpen && (
+            <div className="md:hidden pb-6 animate-fadeInUp">
+              <div className="flex flex-col gap-4">
+                <a
+                  href="#"
+                  className="flex items-center gap-3 px-4 py-3 text-blue-100 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+                >
+                  <Home className="w-5 h-5" />
+                  <span className="font-medium">Home</span>
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-3 px-4 py-3 text-blue-100 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+                >
+                  <Compass className="w-5 h-5" />
+                  <span className="font-medium">Explore</span>
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-3 px-4 py-3 text-blue-100 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+                >
+                  <Users className="w-5 h-5" />
+                  <span className="font-medium">About</span>
+                </a>
+                <a
+                  href="#"
+                  className="flex items-center gap-3 px-4 py-3 text-blue-100 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300"
+                >
+                  <Phone className="w-5 h-5" />
+                  <span className="font-medium">Contact</span>
+                </a>
+                <button className="mt-2 w-full px-6 py-3 backdrop-blur-xl bg-white/10 border border-white/20 text-white font-semibold rounded-full hover:bg-white/20 transition-all">
+                  Join as Vendor
+                </button>
+                <button className="mt-2 w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg">
+                  Get Started
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
     </>
   );
 }

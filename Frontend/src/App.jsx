@@ -15,6 +15,7 @@ import Protected from "./components/Protected";
 import VendorShopForm from "./pages/vendor/UpdateProfile";
 import ShowProduct from "./pages/vendor/ShowProduct";
 import VendorDetails from "./pages/vendor/VendorDetails"
+import FeaturesPage from "./pages/FeaturesPage"
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
 
           }
         ></Route>
+        <Route path="/features" element={<FeaturesPage/>}></Route>
         <Route path="/vendor/:id" element={<VendorDetails/>}></Route>
         <Route path="/viewProduct" element={<ShowProduct/>}></Route>
         <Route path="/registerBusiness" element={<VendorShopForm />}></Route>

@@ -20,7 +20,6 @@ export default function VendorNavbar() {
   const navigate = useNavigate()
   const {Logout,vendor} = useAuth()
   const handleLogout = () => {
-    // Add your logout logic here
     Logout();
     navigate("/")
   };

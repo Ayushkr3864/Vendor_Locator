@@ -4,6 +4,7 @@ import { Store, ShoppingBag } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router";
+
 const api = import.meta.env.VITE_BACKEND_URL
 import {
   faFacebook,
@@ -50,13 +51,13 @@ function Login() {
         settoastType("error");
         settoastmessage(res_data.message || "Invalid email or password");
         setShowtoast(true);
+        localStorage.setItem("authenticate",false)
         return;
       }
       settoastType("success");
       settoastmessage("Vendor login successful");
       setShowtoast(true);
-
-
+       localStorage.setItem("authenticate", true);
       setFormData({
         email: "",
         password: "",
@@ -64,7 +65,7 @@ function Login() {
       });
 
       setTimeout(() => {
-        navigate("/");
+        navigate("/vendorDash")
         setLoading(false)
       }, 1500);
     } catch (error) {
@@ -73,6 +74,7 @@ function Login() {
       settoastmessage("Something went wrong. Please try again.");
       setShowtoast(true);
       setLoading(false)
+       localStorage.setItem("authenticate", false);
     } finally {
       setLoading(false)
     }
@@ -82,7 +84,7 @@ function Login() {
   return (
     <>
       <Navbar />
-      <div className="md:mt-20 mt-15 relative min-h-screen flex  flex-col justify-center items-center w-full">
+      <div className="mt-20 mt-15 relative min-h-screen flex  flex-col justify-center items-center w-full">
         <Toast show={showtoast} message={toastMessage} type={toastType} />
         <div className="absolute inset-0">
           <img
@@ -92,7 +94,7 @@ function Login() {
           />
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
-        <div className="flex mb-8 rounded-lg z-10 overflow-hidden md:w-[20%] w-[80%] -mt-25 border border-gray-600">
+        <div className="flex mb-8 rounded-lg z-10 overflow-hidden md:w-[20%] w-[80%]  border border-gray-600">
           <button
             onClick={() => setActive("user")}
             className={`w-[60%] py-3  font-semibold ${
@@ -146,7 +148,6 @@ function Login() {
             >
               <Store size={60} color="#28a745" />
             </motion.div>
-
             <motion.div>
               <h1 className="text-center text-2xl font-semibold tracking-wide">
                 LOGIN ACCOUNT

@@ -28,16 +28,38 @@ function App() {
         <Route
           path="/vendorDash"
           element={
+            <Protected>
               <VendorDashboard />
-
+            </Protected>
           }
         ></Route>
-        <Route path="/features" element={<FeaturesPage/>}></Route>
-        <Route path="/vendor/:id" element={<VendorDetails/>}></Route>
-        <Route path="/viewProduct" element={<ShowProduct/>}></Route>
-        <Route path="/registerBusiness" element={<VendorShopForm />}></Route>
+        <Route path="/features" element={<FeaturesPage />}></Route>
+        <Route path="/vendor/:id" element={<VendorDetails />}></Route>
+        <Route
+          path="/viewProduct"
+          element={
+            <Protected>
+              <ShowProduct />
+            </Protected>
+          }
+        ></Route>
+        <Route
+          path="/registerBusiness"
+          element={
+            <Protected>
+              <VendorShopForm />
+            </Protected>
+          }
+        ></Route>
         <Route path="/userDash" element={<UserDashboard />}></Route>
-        <Route path="/create/product" element={<Product />}></Route>
+        <Route
+          path="/create/product"
+          element={
+            <Protected>
+              <Product />
+            </Protected>
+          }
+        ></Route>
         <Route path="/explore/vendor" element={<ListVendor />}></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>

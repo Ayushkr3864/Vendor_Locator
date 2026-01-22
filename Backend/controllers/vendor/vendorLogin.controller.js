@@ -24,9 +24,9 @@ const vendorLogin = async (req, res) => {
       httpOnly: true, // not accessible via JS
       secure: true,
     });
-    res.status(200).json({message:"login successful"})
+    res.status(200).json({message:"login successful",isauthenticated:true})
     } catch (e) {
-        res.status(500).json({message:e.message})
+        res.status(500).json({ message: e.message, isauthenticated: false });
   }
 }
 

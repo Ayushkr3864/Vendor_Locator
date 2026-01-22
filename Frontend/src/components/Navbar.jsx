@@ -26,9 +26,9 @@ function Navbar({home}) {
    const [scrollY, setScrollY] = useState(0);
 
    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { checkAuth, isAuthenticated, loading, user, Logout, message, toastType, showtoast } = useAuth();
-  useEffect(() => { checkAuth() }, [])
-  console.log("authen",isAuthenticated);
+  // const { checkAuth, isAuthenticated, loading, user, Logout, message, toastType, showtoast } = useAuth();
+  // useEffect(() => { checkAuth() }, [])
+  // console.log("authen",isAuthenticated);
   const handleNavigate = () => {
     if (isAuthenticated) {
       if (user?.role === "vendor") return navigate("/vendorDash")
@@ -49,7 +49,7 @@ function Navbar({home}) {
 
   return (
     <>
-      <Toast message={message} type={toastType} show={showtoast} />
+      {/* <Toast message={message} type={toastType} show={showtoast} /> */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrollY > 50
@@ -75,15 +75,15 @@ function Navbar({home}) {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               <a
-                href="#"
+                onClick={()=>(navigate("/"))}
                 className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
               >
                 <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Home</span>
               </a>
               <a
-                href="#"
-                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
+                onClick={()=>(navigate("/explore/vendor"))}
+                className="group flex items-center gap-2 text-blue-100 cursor-pointer hover:text-white transition-colors duration-300"
               >
                 <Compass className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Explore</span>
@@ -106,13 +106,7 @@ function Navbar({home}) {
 
             {/* CTA Button */}
             <div className="hidden md:block">
-              <button className="group relative px-5 py-2.5 backdrop-blur-xl bg-white/10 border border-white/20 text-white font-semibold rounded-full hover:bg-white/20 transition-all duration-300 hover:scale-105">
-                <span className="flex items-center gap-2">
-                  Join as Vendor
-                  <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                </span>
-              </button>
-              <button className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 overflow-hidden">
+              <button className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 overflow-hidden" onClick={()=>(navigate("/login"))}>
                 <span className="relative z-10 flex items-center gap-2">
                   Get Started
                   <Search className="w-4 h-4 group-hover:rotate-12 transition-transform" />

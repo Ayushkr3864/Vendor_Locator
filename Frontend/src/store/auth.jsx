@@ -10,13 +10,12 @@ export const AuthProvider = ({ children }) => {
   const [toastType, settoastType] = useState("success");
   const [message, setMessage] = useState("");
   const [user, setUser] = useState(null);
-  const [totalProducts,setTotalProducts] = useState(0)
+  const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [vendor, setVendor] = useState(null);
 
-  const checkAuth = async () => {
+  const checkAuth = useCallback(async () => {
     try {
-      setLoading(true);
       const res = await fetch(`${api}/authenticate`, {
         method: "GET",
         credentials: "include",
@@ -25,20 +24,25 @@ export const AuthProvider = ({ children }) => {
       if (!res.ok) {
         throw new Error("Authentication check failed");
       }
-
       const data = await res.json();
-      setIsAuthenticated(data.isauthenticate || false);
-      setUser(data || null);
+      setIsAuthenticated(data.isauthenticate);
+      if (data.isauthenticate) {
+        localStorage.setItem("authenticate",true)
+      }
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
       return data;
     } catch (e) {
       console.error("Auth check error:", e.message);
       setIsAuthenticated(false);
-      setUser(null);
       return false;
     } finally {
       setLoading(false);
     }
-  };
+  }, []); 
+ 
+
   const Logout = async () => {
     try {
       const res = await fetch(`${api}/Logout`, {
@@ -52,11 +56,10 @@ export const AuthProvider = ({ children }) => {
 
       const data = await res.json();
       console.log(data);
-
       setIsAuthenticated(false);
+      localStorage.clear()
       setUser(null);
       setVendor(null);
-
       setMessage(data.message || "Logout successful");
       setShowtoast(true);
       settoastType("success");
@@ -76,8 +79,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
-  
   const fetchUser = useCallback(async () => {
     setLoading(true);
     try {
@@ -90,7 +91,7 @@ export const AuthProvider = ({ children }) => {
       }
       const data = await res.json();
       console.log(data);
-      setTotalProducts(data.totalProducts)
+      setTotalProducts(data.totalProducts);
       setVendor(data.vendor || data);
       return data.vendor || data;
     } catch (e) {
@@ -107,7 +108,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
   useEffect(() => {
     checkAuth();
-  }, []);
+  }, [checkAuth]);
   return (
     <authContext.Provider
       value={{
@@ -124,7 +125,7 @@ export const AuthProvider = ({ children }) => {
         setShowtoast,
         setMessage,
         settoastType,
-        totalProducts
+        totalProducts,
       }}
     >
       {children}
@@ -134,8 +135,6 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => {
   const context = useContext(authContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
+ 
   return context;
 };

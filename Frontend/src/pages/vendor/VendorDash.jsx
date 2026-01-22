@@ -13,14 +13,16 @@ import {
 import StatusBadge from "../../components/StatusBadge";
 import ActiveBadge from "../../components/ActiveBadge";
 import VendorNavbar from "../../components/VendorNav";
+const API = import.meta.env.VITE_BACKEND_URL;
 const VendorDashboard = () => {
-  const { vendor, fetchUser, loading } = useAuth();
+  const { vendor, fetchUser, loading,totalProducts } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);
 
+ 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -108,7 +110,7 @@ const VendorDashboard = () => {
                 </div>
                 <div className="bg-blue-100 p-4 rounded-xl text-center">
                   <p className="text-2xl font-bold text-blue-700">
-                    {vendor?.totalProducts || 0}
+                    {totalProducts || 0}
                   </p>
                   <p className="text-gray-600 text-sm">Products</p>
                 </div>

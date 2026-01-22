@@ -10,10 +10,11 @@ import About from "./pages/About";
 import VendorDashboard from "./pages/vendor/VendorDash";
 import UserDashboard from "./pages/UserDash";
 import Product from "./pages/vendor/Product";
-import ListProduct from "./pages/vendor/ListProduct";
+import ListVendor from "./pages/vendor/ListVendort";
 import Protected from "./components/Protected";
 import VendorShopForm from "./pages/vendor/UpdateProfile";
 import ShowProduct from "./pages/vendor/ShowProduct";
+import VendorDetails from "./pages/vendor/VendorDetails"
 
 function App() {
   return (
@@ -30,11 +31,12 @@ function App() {
 
           }
         ></Route>
+        <Route path="/vendor/:id" element={<VendorDetails/>}></Route>
         <Route path="/viewProduct" element={<ShowProduct/>}></Route>
         <Route path="/registerBusiness" element={<VendorShopForm />}></Route>
         <Route path="/userDash" element={<UserDashboard />}></Route>
         <Route path="/create/product" element={<Product />}></Route>
-        <Route path="/exolore/product" element={<ListProduct />}></Route>
+        <Route path="/explore/vendor" element={<ListVendor />}></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>
     </>

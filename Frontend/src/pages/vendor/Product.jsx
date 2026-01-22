@@ -4,6 +4,8 @@ import VendorNavbar from "../../components/VendorNav";
 import SuccessMessage from "../success";
 const api = import.meta.env.VITE_BACKEND_URL;
 import Toast from "../../components/Toast"
+import { useAuth } from "../../store/auth"
+import {useNavigate} from "react-router-dom"
 
 const Tags = [
   "new",
@@ -25,6 +27,8 @@ const Tags = [
   "handcrafted",
 ];
 const CreateProduct = () => {
+  const navigate = useNavigate()
+  const {Logout} = useAuth()
   const [productImg, setProductImg] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -32,21 +36,27 @@ const CreateProduct = () => {
   const [showtoast, setShowtoast] = useState(false);
   const [toastType, settoastType] = useState("success");
   const [message, setMessage] = useState("");
+  const [check,setCheck] = useState(false)
   const [formData, setFormData] = useState({
     productName: "",
     price: "",
     available: false,
     tag: "",
+    quantity:""
   });
 
   // Handle input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]:
-        e.target.name === "available" ? e.target.checked : e.target.value,
+      [e.target.name]: e.target.value,
     });
+    
   };
+  const handleCheck = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.checked })
+    setCheck(e.target.checked)
+  }
 
   // Handle Image Upload
   const handleImageChange = (e) => {
@@ -72,6 +82,8 @@ const CreateProduct = () => {
         body: form,
       });
       const data = await res.json();
+      console.log(res);
+      
       if (!res.ok) {
           if (!res.ok) {
             settoastType("error");
@@ -79,8 +91,15 @@ const CreateProduct = () => {
             setShowtoast(true);
             setTimeout(() => {
               setShowtoast(false)
-            },2000)
-            return;
+            }, 2000)
+            if (
+              res.status == 401 &&
+              data.message == "Token expired please login again"
+            ) {
+             setTimeout(()=>{ Logout();
+             navigate("/login");},3000)
+            }
+              return;
           }
       };
       setTimeout(() => {
@@ -121,8 +140,8 @@ const CreateProduct = () => {
             "url('https://images.unsplash.com/photo-1481349518771-20055b2a7b24?auto=format&fit=crop&w=1950&q=80')",
         }}
       >
-        <Toast message={message} type={toastType} show={showtoast}/>
-        
+        <Toast message={message} type={toastType} show={showtoast} />
+
         {/* Card animation */}
         {success ? (
           <SuccessMessage message={"Product Listed Successfully 🎉"} />
@@ -213,12 +232,30 @@ const CreateProduct = () => {
                   type="checkbox"
                   name="available"
                   checked={formData.available}
-                  onChange={handleChange}
+                  onChange={handleCheck}
                   className="w-5 h-5"
                 />
                 <span className="text-white font-medium">Available</span>
               </motion.div>
-
+              {/* quantity */}
+              {check && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <label className="text-white font-medium">Quantity</label>
+                  <input
+                    type="text"
+                    name="quantity"
+                    value={formData.quantity}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
+                    placeholder="Enter Quantity"
+                    required
+                  />
+                </motion.div>
+              )}
               {/* Image Upload */}
               <motion.div
                 initial={{ opacity: 0 }}
@@ -249,10 +286,10 @@ const CreateProduct = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}
-                  type="submit"
+                type="submit"
                 className="w-full py-3 bg-white/30 hover:bg-white/50 transition text-white font-semibold rounded-lg shadow-lg backdrop-blur-lg"
               >
-                {loading?"adding...." :"Add product"}
+                {loading ? "adding...." : "Add product"}
               </motion.button>
             </form>
           </motion.div>

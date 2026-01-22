@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {useNavigate } from "react-router-dom"
 import {
   Star,
   MapPin,
@@ -19,11 +20,13 @@ const api = import.meta.env.VITE_BACKEND_URL
 
 
 const FeaturedVendors = () => {
-  const [searchTerm, setSearchTerm] = useState("");
   const [category, setcategory] = useState("All");
-  const [featuredVendors, setFeaturedVendors] = useState([])
-  const [page, setPage] = useState(1)
-  const [totalPages,setTotalPages] = useState(1)
+  const [featuredVendors, setFeaturedVendors] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [location, setLocation] = useState({ lat: null, long: null });
+  const [locationStatus, setLocationStatus] = useState("idle");
+const navigate = useNavigate()
   const categories = [
     "All",
     "Grocery",
@@ -42,59 +45,72 @@ const FeaturedVendors = () => {
     "Cafe",
     "Other",
   ];
-  const limit = 6
-  const fetchVendors = async (page) => {
-    const res = await fetch(
-      `${api}/featuredVendor?page=${page}&limit=${limit}&category=${category}`,
-      {
-        method: "GET",
-        credentials: "include",
+  const detectLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationStatus("denied");
+      return;
+    }
+
+    setLocationStatus("loading");
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        });
+        setLocationStatus("granted");
+        console.log(
+          ("lat", position.coords.latitude, "long", position.coords.longitude),
+        );
+        
       },
-    );
-    const vendors = await res.json();
-    console.log(vendors);
-    
-   
-    setFeaturedVendors(vendors.featuredVendor);
-    setTotalPages(vendors.pagination.totalPage);
-  }
-  useEffect(() => {
-    fetchVendors(page);
-  }, [page, category]);
-  const getBadgeStyle = (badge) => {
-    const styles = {
-      "Top Seller": {
-        bg: "bg-gradient-to-r from-yellow-400 via-orange-400 to-red-500",
-        icon: Flame,
+      () => {
+        setLocationStatus("denied");
       },
-      Trending: {
-        bg: "bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600",
-        icon: TrendingUp,
-      },
-      Verified: {
-        bg: "bg-gradient-to-r from-green-400 via-teal-500 to-blue-500",
-        icon: Award,
-      },
-      New: {
-        bg: "bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-500",
-        icon: Sparkles,
-      },
-      "Top Rated": {
-        bg: "bg-gradient-to-r from-red-400 via-pink-500 to-purple-500",
-        icon: Star,
-      },
-      "Best Choice": {
-        bg: "bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600",
-        icon: Zap,
-      },
-    };
-    return (
-      styles[badge] || {
-        bg: "bg-gradient-to-r from-gray-400 to-gray-600",
-        icon: Award,
-      }
     );
   };
+
+  const limit = 6;
+  const fetchVendors = async (page) => {
+    let url = `${api}/featuredVendor?page=${page}&limit=${limit}&category=${category}`;
+
+    if (location.lat && location.long) {
+      url += `&lat=${location.lat}&long=${location.long}&distance=5`;
+    }
+
+    const res = await fetch(url, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const vendors = await res.json();
+    setFeaturedVendors(vendors.featuredVendor);
+    setTotalPages(vendors.pagination.totalPage);
+  };
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.log("Geolocation not supported");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocation({
+          lat: position.coords.latitude,
+          long: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.log("Location error:", error.message);
+      },
+    );
+  }, []);
+
+  useEffect(() => {
+    fetchVendors(page);
+  }, [page, category, location.lat, location.long]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 text-slate-100">
@@ -118,9 +134,39 @@ const FeaturedVendors = () => {
                   Featured Vendors
                 </h1>
               </div>
+              {/* 📍 Location Banner */}
+
               <p className="text-slate-300 ml-16 text-lg">
                 ✨ Discover our top-rated trusted sellers
               </p>
+            </div>
+            <div className="mb-6">
+              {locationStatus !== "granted" ? (
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-yellow-500/10 border border-yellow-400/30 rounded-2xl p-5">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="text-yellow-400" />
+                    <p className="text-yellow-300 font-semibold">
+                      Enable location to see nearby vendors
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={detectLocation}
+                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-3 rounded-xl hover:opacity-90 transition"
+                  >
+                    {locationStatus === "loading"
+                      ? "Detecting..."
+                      : "Enable Location"}
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-4">
+                  <MapPin className="text-emerald-400" />
+                  <p className="text-emerald-300 font-semibold">
+                    Showing vendors near you
+                  </p>
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-full border border-emerald-500/30 shadow-lg">
@@ -137,18 +183,8 @@ const FeaturedVendors = () => {
       <div className="relative max-w-7xl mx-auto px-6 py-10">
         {/* Filters */}
         <div className="bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-10 border border-emerald-500/30">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Search */}
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400" />
-              <input
-                type="text"
-                placeholder="Search vendors..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-900 border border-emerald-600/40 rounded-xl focus:ring-2 focus:ring-emerald-400 outline-none text-slate-100"
-              />
-            </div>
 
             {/* Category */}
             <div className="relative">
@@ -165,6 +201,26 @@ const FeaturedVendors = () => {
                 ))}
               </select>
             </div>
+            {category == "All" ? (
+              ""
+            ) : (
+              <button
+                onClick={() => {
+                  setcategory("All");
+                  setPage(1);
+                }}
+                disabled={category == "All"}
+                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl
+             bg-slate-700/80 hover:bg-slate-600
+             border border-slate-500/50
+             text-slate-200 font-semibold
+             transition-all duration-200
+             hover:shadow-lg hover:shadow-emerald-500/20"
+              >
+                <Filter size={18} className="text-emerald-400" />
+                Clear Filters
+              </button>
+            )}
 
             {/* Sort */}
           </div>
@@ -193,7 +249,7 @@ const FeaturedVendors = () => {
 
                   <div className="absolute top-4 right-4 bg-emerald-500 text-white px-4 py-2 rounded-full flex items-center gap-2 shadow-lg">
                     {/* <BadgeIcon size={16} /> */}
-                    {vendor.isActive?"Verified":"not verified"}
+                    {vendor.isActive ? "Verified" : "not verified"}
                   </div>
 
                   {/* <div className="absolute bottom-4 left-4 bg-slate-900/90 px-4 py-2 rounded-full flex items-center gap-2">
@@ -211,6 +267,18 @@ const FeaturedVendors = () => {
                   <h3 className="text-2xl font-black bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-2">
                     {vendor.name}
                   </h3>
+                  <div className="flex items-center gap-2 text-sm mb-3">
+                    <span className="px-3 py-1 rounded-full bg-slate-700 text-emerald-300 font-semibold">
+                      {vendor.category}
+                    </span>
+
+                    {vendor.distance !== undefined && (
+                      <span className="flex items-center gap-1 text-cyan-300 font-medium">
+                        <MapPin size={14} />
+                        {vendor.distance.toFixed(1)} km away
+                      </span>
+                    )}
+                  </div>
 
                   <p className="text-slate-300 text-sm mb-5 line-clamp-2">
                     {vendor.description}
@@ -227,7 +295,9 @@ const FeaturedVendors = () => {
                     </div>
                     <div className="bg-slate-700 rounded-xl p-3 text-center">
                       <Award className="mx-auto text-cyan-400 mb-1" />
-                      <div className="font-bold text-lg">{vendor.rating || 4.5}</div>
+                      <div className="font-bold text-lg">
+                        {vendor.rating || 4.5}
+                      </div>
                       <p className="text-xs text-slate-400">Rating</p>
                     </div>
                   </div>
@@ -249,7 +319,10 @@ const FeaturedVendors = () => {
                   </div>
 
                   {/* Button */}
-                  <button className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all">
+                  <button
+                    className="w-full bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 transition-all"
+                    onClick={() => navigate(`/vendor/${vendor._id}`)}
+                  >
                     View Store
                     <ChevronRight className="group-hover:translate-x-2 transition-transform" />
                   </button>
@@ -271,25 +344,45 @@ const FeaturedVendors = () => {
             </p>
           </div>
         )}
-        <div className="flex justify-between items-center mt-5">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-10">
+          {/* Prev */}
           <button
             disabled={page === 1}
             onClick={() => setPage(page - 1)}
-            className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+            className="
+      px-6 py-3 rounded-xl font-semibold
+      bg-gradient-to-r from-emerald-600 to-teal-600
+      text-white shadow-lg
+      hover:from-emerald-500 hover:to-teal-500
+      transition-all duration-300
+      disabled:opacity-40 disabled:cursor-not-allowed
+    "
           >
-            Prev
+            ← Previous
           </button>
 
-          <span className="text-sm text-gray-600">
+          {/* Page Info */}
+          <span
+            className="text-sm font-semibold bg-slate-800/80 px-4 py-2 rounded-full
+                   border border-emerald-500/30 text-emerald-300"
+          >
             Page {page} of {totalPages}
           </span>
 
+          {/* Next */}
           <button
             disabled={page === totalPages}
             onClick={() => setPage(page + 1)}
-            className="px-4 py-2 rounded-lg bg-gray-200 disabled:opacity-50"
+            className="
+      px-6 py-3 rounded-xl font-semibold
+      bg-gradient-to-r from-teal-600 to-cyan-600
+      text-white shadow-lg
+      hover:from-teal-500 hover:to-cyan-500
+      transition-all duration-300
+      disabled:opacity-40 disabled:cursor-not-allowed
+    "
           >
-            Next
+            Next →
           </button>
         </div>
       </div>
@@ -319,7 +412,7 @@ const FeaturedVendors = () => {
         }
       `}</style>
     </div>
-  );;
+  );
 };
 
 export default FeaturedVendors;

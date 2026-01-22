@@ -18,7 +18,7 @@ export default function VendorNavbar() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate()
-  const {Logout,vendor} = useAuth
+  const {Logout,vendor} = useAuth()
   const handleLogout = () => {
     // Add your logout logic here
     Logout();

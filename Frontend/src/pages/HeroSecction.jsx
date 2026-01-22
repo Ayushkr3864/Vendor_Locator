@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
-
+import {useNavigate} from "react-router-dom"
 const container = {
   hidden: { opacity: 0 },
   visible: {
@@ -31,6 +31,7 @@ const floatingPin = {
 };
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="relative h-screen w-full overflow-hidden">
       {/* Animated Background */}
@@ -101,10 +102,10 @@ const HeroSection = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="rounded-xl bg-blue-500 px-8 py-3 text-lg font-semibold shadow-lg hover:bg-blue-600 transition"
+            onClick={()=>(navigate("/explore/vendor"))}
             >
               Get Started
             </motion.button>
-
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

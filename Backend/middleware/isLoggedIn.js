@@ -25,11 +25,12 @@ const isLoggedIn = (req, res, next) => {
 
     next(); // VERY IMPORTANT
   } catch (e) {
-    return res.status(500).json({
-      success: false,
-      message: e.message,
-      isauthenticate: false,
-    });
+    if (e.name === "TokenExpiredError") {
+      return res
+        .status(401)
+        .json({ message: "Token expired please login again" })
+    }
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 

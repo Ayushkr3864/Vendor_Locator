@@ -42,6 +42,7 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Vendor",
     },
+    quantity:{type:String}
   },
   {
     timestamps: true,

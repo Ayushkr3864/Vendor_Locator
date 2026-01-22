@@ -12,6 +12,8 @@ const updateProfile = require("./routes/vendor/updateProfile.route");
 const addProduct = require("./routes/vendor/addProduct.route")
 const fetchProduct = require("./routes/vendor/fetchProduct.route")
 const featuredVendor = require("./routes/vendor/featuredVendor.route")
+const vendorDetails = require("./routes/vendor/vendorDetails.route")
+const deleteProduct = require("./routes/vendor/deleteProduct.route")
 require("./config/cloudinary");
 const cors = require("cors");
 app.use(express.json());
@@ -36,6 +38,8 @@ app.use("/api/authenticate", Authenticate)
 app.use("/api", updateProfile)
 app.use("/api/addProduct", addProduct)
 app.use("/api/vendor/products", fetchProduct);
-app.use("/api/featuredVendor",featuredVendor)
+app.use("/api/featuredVendor", featuredVendor)
+app.use("/api", vendorDetails)
+app.use("/api",deleteProduct)
 app.listen(3000,()=>{console.log("Vendor Locator API is running at port 3000");
 })

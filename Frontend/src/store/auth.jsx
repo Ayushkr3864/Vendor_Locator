@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [showtoast, setShowtoast] = useState(false);
   const [toastType, settoastType] = useState("success");
   const [message, setMessage] = useState("");
-  const [user, setUser] = useState(null); // Added user state for role
+  const [user, setUser] = useState(null);
+  const [totalProducts,setTotalProducts] = useState(0)
   const [loading, setLoading] = useState(true);
   const [vendor, setVendor] = useState(null);
 
@@ -88,6 +89,8 @@ export const AuthProvider = ({ children }) => {
         throw new Error("User fetching failed");
       }
       const data = await res.json();
+      console.log(data);
+      setTotalProducts(data.totalProducts)
       setVendor(data.vendor || data);
       return data.vendor || data;
     } catch (e) {
@@ -101,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []); // Empty array since it doesn't depend on any props/state
+  }, []);
   useEffect(() => {
     checkAuth();
   }, []);
@@ -121,6 +124,7 @@ export const AuthProvider = ({ children }) => {
         setShowtoast,
         setMessage,
         settoastType,
+        totalProducts
       }}
     >
       {children}

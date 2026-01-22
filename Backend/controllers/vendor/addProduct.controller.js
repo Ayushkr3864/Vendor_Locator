@@ -4,14 +4,13 @@ const addProduct = async (req, res) => {
   try {
     const vendorId = req.user.id;
     console.log(vendorId);
-    const { tag, available, price, productName } = req.body;
+    const { tag, available, price, productName,quantity } = req.body;
     console.log(req.body);
     if (!tag || !price || !productName) {
       return res.status(400).json({ message: "please fill all fields" });
     }
     const vendor = await vendorDB.findOne({ _id: vendorId });
     console.log(vendor);
-    
     if (!vendor.isProfileComplete)
       return res
         .status(404)
@@ -23,6 +22,7 @@ const addProduct = async (req, res) => {
       productName,
       productImage: req.file?.path,
       vendorId,
+      quantity,
     });
     res.status(200).json({ message: "product Created Successfully", product });
   } catch (e) {

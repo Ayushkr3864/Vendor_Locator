@@ -3,6 +3,7 @@ import VendorNavbar from "../../components/VendorNav";
 import { ShoppingBag, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Toast from "../../components/Toast"
 
 const API = "http://localhost:3000/api";
 
@@ -13,6 +14,9 @@ function ShowProduct() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
+    const [showtoast, setShowtoast] = useState(false);
+    const [toastType, settoastType] = useState("success")
+    const [Message,setMessage] = useState("")
 
   const limit = 6;
 
@@ -38,11 +42,45 @@ function ShowProduct() {
   useEffect(() => {
     fetchProducts(page);
   }, [page]);
-
+  const deleteProduct = async (productId) => {
+   setLoading(true)
+    try {
+      const res = await fetch(`${API}/deleteProduct/${productId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        settoastType("error");
+        setMessage("something error while deleting product");
+        setShowtoast(true);
+        setTimeout(() => {
+          setShowtoast(false);
+        }, 2000);
+        return;
+      }
+       setProducts((prev) =>
+         prev.filter((product) => product._id !== productId),
+       );
+      settoastType("success");
+      setMessage(data.message || "product deleted successfully");
+      setShowtoast(true);
+      setTimeout(() => {
+        setShowtoast(false);
+      }, 2000);
+    } catch (e) {
+      console.error(e.message);
+      setMessage(e.message);
+      setShowtoast(true);
+      settoastType("failed");
+    } finally {
+      setLoading(false);
+    }
+ };
   return (
     <>
       <VendorNavbar />
-
+      <Toast message={Message} type={toastType} show={showtoast} />
       <motion.div
         className="bg-white mt-6 p-5 rounded-2xl shadow-md"
         initial={{ opacity: 0, y: 20 }}
@@ -100,10 +138,10 @@ function ShowProduct() {
                   <td className="p-3">₹{p.price}</td>
                   <td className="p-3">{p.orders || 0}</td>
                   <td className="p-3 text-right">
-                    <button className="text-blue-600 hover:underline mr-3">
+                    {/* <button className="text-blue-600 hover:underline mr-3">
                       Edit
-                    </button>
-                    <button className="text-red-600 hover:underline">
+                    </button> */}
+                    <button className="text-red-600 hover:underline" onClick={()=>(deleteProduct(`${p._id}`))}>
                       Delete
                     </button>
                   </td>

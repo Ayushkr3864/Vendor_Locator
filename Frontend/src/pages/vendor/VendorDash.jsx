@@ -20,7 +20,7 @@ const VendorDashboard = () => {
 
   useEffect(() => {
     fetchUser();
-  }, [fetchUser]);
+  }, []);
 
  
   if (loading) {

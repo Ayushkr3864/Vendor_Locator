@@ -12,6 +12,7 @@ import {
   Award,
   TrendingUp,
 } from "lucide-react";
+import {useNavigate} from "react-router-dom"
 import Navbar from "../components/Navbar"
 export default function FeaturesPage() {
   const [scrollY, setScrollY] = useState(0);
@@ -22,6 +23,8 @@ export default function FeaturesPage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -169,7 +172,10 @@ export default function FeaturesPage() {
                 and find the best services without random searching.
               </p>
 
-              <button className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 text-white text-lg font-bold rounded-full shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 overflow-hidden">
+              <button
+                className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 via-cyan-500 to-blue-600 text-white text-lg font-bold rounded-full shadow-2xl hover:shadow-cyan-500/50 transition-all duration-300 hover:scale-105 overflow-hidden"
+                onClick={() => navigate("/explore/vendor")}
+              >
                 <span className="relative z-10 flex items-center gap-3">
                   Explore Vendors Near You
                   <MapPin className="w-5 h-5 group-hover:rotate-12 transition-transform" />

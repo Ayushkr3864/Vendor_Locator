@@ -14,6 +14,7 @@ const fetchProduct = require("./routes/vendor/fetchProduct.route")
 const featuredVendor = require("./routes/vendor/featuredVendor.route")
 const vendorDetails = require("./routes/vendor/vendorDetails.route")
 const deleteProduct = require("./routes/vendor/deleteProduct.route")
+const userRegister = require("./routes/user/userRegister.route")
 require("./config/cloudinary");
 const cors = require("cors");
 app.use(express.json());
@@ -40,6 +41,8 @@ app.use("/api/addProduct", addProduct)
 app.use("/api/vendor/products", fetchProduct);
 app.use("/api/featuredVendor", featuredVendor)
 app.use("/api", vendorDetails)
-app.use("/api",deleteProduct)
+app.use("/api", deleteProduct)
+// user route
+app.use("/api/user/register",userRegister)
 app.listen(3000,()=>{console.log("Vendor Locator API is running at port 3000");
 })

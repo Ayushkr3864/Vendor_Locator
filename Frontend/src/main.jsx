@@ -5,7 +5,7 @@ import App from './App.jsx'
 import { createBrowserRouter, createRoutesFromElements, RouterProvider,Route, BrowserRouter } from 'react-router'
 import { AuthProvider } from './store/auth.jsx'
 
-
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // const Router = createBrowserRouter(
 //   createRoutesFromElements(
@@ -17,9 +17,11 @@ import { AuthProvider } from './store/auth.jsx'
 // );
 
 createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </AuthProvider>
+  <GoogleOAuthProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AuthProvider>
+  </GoogleOAuthProvider>,
 );

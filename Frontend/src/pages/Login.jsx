@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 
-import { Store, ShoppingBag } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useNavigate } from "react-router";
-
-const api = import.meta.env.VITE_BACKEND_URL
 import {
   faFacebook,
   faGoogle,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import Toast from "../components/Toast";
-import Navbar from "../components/Navbar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "framer-motion";
+import { ShoppingBag, Store } from "lucide-react";
+import { useNavigate } from "react-router";
 import AnimatedLoginButton from "../components/AnimatedButton";
+import Navbar from "../components/Navbar";
+import Toast from "../components/Toast";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+const api = import.meta.env.VITE_BACKEND_URL
 function Login() {
   const [formData, setFormData] = useState({
     email: "",
@@ -264,15 +264,40 @@ function Login() {
               )}
             </AnimatePresence>
 
+            {/* Register Redirect */}
             <motion.div
-              className="flex justify-center gap-4 mt-8 items-center flex-col"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0, transition: { delay: 0.3 } },
-              }}
+              className="mt-6 text-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
             >
-              <h1 className="text-lg font-medium">Continue with</h1>
+              <p className="text-gray-300 text-sm">
+                Don&apos;t have an account?{" "}
+                <span
+                  onClick={() => navigate("/register")}
+                  className="text-green-400 font-semibold cursor-pointer hover:underline"
+                >
+                  Register here
+                </span>
+              </p>
             </motion.div>
+            {/* Google Login */}
+            {/* Google Login */}
+            <div className="flex justify-center mt-6">
+              <GoogleLogin
+                onSuccess={(credentialResponse) => {
+                  console.log(credentialResponse); 
+                }}
+                onError={() => {
+                  console.log("Google Login Failed");
+                }}
+                theme="filled_green"
+                size="large"
+                shape="pill"
+                width="300"
+                text="continue_with"
+              />
+            </div>
           </div>
         </motion.div>
       </div>

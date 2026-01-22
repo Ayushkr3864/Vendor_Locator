@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [vendor, setVendor] = useState(null);
 
   const checkAuth = useCallback(async () => {
+    setLoading(true); // Start loading
     try {
       const res = await fetch(`${api}/authenticate`, {
         method: "GET",
@@ -26,22 +27,15 @@ export const AuthProvider = ({ children }) => {
       }
       const data = await res.json();
       setIsAuthenticated(data.isauthenticate);
-      if (data.isauthenticate) {
-        localStorage.setItem("authenticate",true)
-      }
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000);
-      return data;
+      return data; // Return the data
     } catch (e) {
       console.error("Auth check error:", e.message);
       setIsAuthenticated(false);
-      return false;
+      return { isauthenticate: false }; // Return consistent object structure
     } finally {
-      setLoading(false);
+      setLoading(false); 
     }
-  }, []); 
- 
+  }, []);
 
   const Logout = async () => {
     try {
@@ -57,7 +51,6 @@ export const AuthProvider = ({ children }) => {
       const data = await res.json();
       console.log(data);
       setIsAuthenticated(false);
-      localStorage.clear()
       setUser(null);
       setVendor(null);
       setMessage(data.message || "Logout successful");

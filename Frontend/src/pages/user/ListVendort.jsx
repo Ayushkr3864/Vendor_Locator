@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import UserNavbar from "./UserNavbar";
 import {
   Star,
   MapPin,
@@ -113,121 +114,88 @@ const navigate = useNavigate()
   }, [page, category, location.lat, location.long]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 text-slate-100">
-      {/* Animated Background Shapes */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-8 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
-      </div>
-
-      {/* Header */}
-      <div className="relative bg-slate-900/80 backdrop-blur-xl shadow-2xl sticky top-0 z-20 border-b-4 border-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div>
-              <div className="flex items-center gap-4 mb-2">
-                <div className="p-3 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
-                  <Award className="text-white" size={32} />
-                </div>
-                <h1 className="text-3xl font-black bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                  Featured Vendors
-                </h1>
-              </div>
-              {/* 📍 Location Banner */}
-
-              <p className="text-slate-300 ml-16 text-lg">
-                ✨ Discover our top-rated trusted sellers
-              </p>
-            </div>
-            <div className="mb-6">
-              {locationStatus !== "granted" ? (
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-yellow-500/10 border border-yellow-400/30 rounded-2xl p-5">
-                  <div className="flex items-center gap-3">
-                    <MapPin className="text-yellow-400" />
-                    <p className="text-yellow-300 font-semibold">
-                      Enable location to see nearby vendors
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={detectLocation}
-                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black font-bold px-6 py-3 rounded-xl hover:opacity-90 transition"
-                  >
-                    {locationStatus === "loading"
-                      ? "Detecting..."
-                      : "Enable Location"}
-                  </button>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-400/30 rounded-2xl p-4">
-                  <MapPin className="text-emerald-400" />
-                  <p className="text-emerald-300 font-semibold">
-                    Showing vendors near you
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center gap-3 bg-slate-800 px-6 py-3 rounded-full border border-emerald-500/30 shadow-lg">
-              <Sparkles className="text-emerald-400" size={22} />
-              <span className="font-bold text-lg bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                {featuredVendors.length} Premium Vendors
-              </span>
-            </div>
-          </div>
+    <>
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900 to-teal-900 text-slate-100">
+        {/* Animated Background Shapes */}
+        <div className="fixed inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob"></div>
+          <div className="absolute top-40 right-10 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-4000"></div>
         </div>
-      </div>
 
-      {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-6 py-10">
         {/* Filters */}
-        <div className="bg-slate-800/90 backdrop-blur-xl rounded-2xl shadow-2xl p-6 mb-10 border border-emerald-500/30">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Search */}
-
-            {/* Category */}
-            <div className="relative">
-              <Filter className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-400" />
-              <select
-                value={category}
-                onChange={(e) => setcategory(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-900 border border-cyan-600/40 rounded-xl outline-none text-slate-100"
+        <div className="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-2xl shadow-2xl border-b border-emerald-500/30">
+          <div className="max-w-7xl mx-auto px-6 py-4 ">
+            {/* Single Line Layout */}
+            <div className="flex items-center justify-between md:flex-row  flex-col gap-6">
+              {/* Left: Logo & Title */}
+              <div
+                onClick={() => navigate("/user")}
+                className="flex items-center gap-4 cursor-pointer select-none"
               >
-                {categories.map((cat) => (
-                  <option key={cat} value={cat} className="bg-slate-900">
-                    {cat}
-                  </option>
-                ))}
-              </select>
+                <div className="p-2.5 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl shadow-lg">
+                  <Award className="text-white" size={28} />
+                </div>
+                <div>
+                  <h1 className="text-2xl font-black bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400 bg-clip-text text-transparent">
+                    Featured Vendors
+                  </h1>
+                  <p className="text-slate-400 text-sm">✨ Top-rated sellers</p>
+                </div>
+              </div>
+
+              {/* Center: Filter Controls */}
+              <div className="flex items-center gap-3 flex-1 justify-center max-w-2xl">
+                <div className="relative flex-1 max-w-xs">
+                  <Filter
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-cyan-400"
+                    size={18}
+                  />
+                  <select
+                    value={category}
+                    onChange={(e) => setcategory(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 bg-slate-900 border border-cyan-600/40 rounded-xl outline-none text-slate-100 text-sm"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat} value={cat} className="bg-slate-900">
+                        {cat}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {category !== "All" && (
+                  <button
+                    onClick={() => {
+                      setcategory("All");
+                      setPage(1);
+                    }}
+                    className="flex items-center gap-2 px-4 py-3 rounded-xl
+                    bg-slate-700/80 hover:bg-slate-600
+                    border border-slate-500/50
+                    text-slate-200 font-semibold text-sm
+                    transition-all duration-200
+                    hover:shadow-lg hover:shadow-emerald-500/20 whitespace-nowrap"
+                  >
+                    <Filter size={16} className="text-emerald-400" />
+                    Clear
+                  </button>
+                )}
+              </div>
+
+              {/* Right: Count Badge */}
+              <div className="flex items-center gap-2.5 bg-slate-800 px-5 py-2.5 rounded-full border border-emerald-500/30 shadow-lg">
+                <Sparkles className="text-emerald-400" size={20} />
+                <span className="font-bold text-base bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent whitespace-nowrap">
+                  {featuredVendors.length} Premium
+                </span>
+              </div>
             </div>
-            {category == "All" ? (
-              ""
-            ) : (
-              <button
-                onClick={() => {
-                  setcategory("All");
-                  setPage(1);
-                }}
-                disabled={category == "All"}
-                className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl
-             bg-slate-700/80 hover:bg-slate-600
-             border border-slate-500/50
-             text-slate-200 font-semibold
-             transition-all duration-200
-             hover:shadow-lg hover:shadow-emerald-500/20"
-              >
-                <Filter size={18} className="text-emerald-400" />
-                Clear Filters
-              </button>
-            )}
-
-            {/* Sort */}
           </div>
         </div>
 
         {/* Vendors Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mx-5 mt-5 gap-8">
           {featuredVendors?.map((vendor, index) => {
             // const badgeStyle = getBadgeStyle(vendor.badge);
             // const BadgeIcon = badgeStyle.icon;
@@ -385,33 +353,33 @@ const navigate = useNavigate()
             Next →
           </button>
         </div>
-      </div>
 
-      {/* Animations */}
-      <style jsx>{`
-        @keyframes blob {
-          0%,
-          100% {
-            transform: translate(0, 0) scale(1);
+        {/* Animations */}
+        <style jsx>{`
+          @keyframes blob {
+            0%,
+            100% {
+              transform: translate(0, 0) scale(1);
+            }
+            33% {
+              transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+              transform: translate(-20px, 20px) scale(0.9);
+            }
           }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
+          .animate-blob {
+            animation: blob 8s infinite;
           }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
+          .animation-delay-2000 {
+            animation-delay: 2s;
           }
-        }
-        .animate-blob {
-          animation: blob 8s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-      `}</style>
-    </div>
+          .animation-delay-4000 {
+            animation-delay: 4s;
+          }
+        `}</style>
+      </div>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { motion } from "framer-motion";
 import VendorNavbar from "./VendordashNav";
 import SuccessMessage from "../success";
@@ -27,8 +27,8 @@ const Tags = [
   "handcrafted",
 ];
 const CreateProduct = () => {
+  
   const navigate = useNavigate();
-  const { Logout } = useAuth();
   const [productImg, setProductImg] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,11 @@ const CreateProduct = () => {
     tag: "",
     quantity: "",
   });
+ const { vendor, fetchUser,Logout } = useAuth();
 
+  useEffect(() => {
+    fetchUser();
+  }, [fetchUser]);
   // Handle input changes
   const handleChange = (e) => {
     setFormData({
@@ -162,137 +166,164 @@ const CreateProduct = () => {
               Add New Product
             </motion.h1>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Product Name */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-              >
-                <label className="text-white font-medium">Product Name</label>
-                <input
-                  type="text"
-                  name="productName"
-                  value={formData.productName}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
-                  placeholder="Enter product name"
-                  required
-                />
-              </motion.div>
-
-              {/* Price */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.4 }}
-              >
-                <label className="text-white font-medium">Price (₹)</label>
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
-                  placeholder="Enter price"
-                  required
-                />
-              </motion.div>
-
-              {/* Tags */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <label className="text-white font-medium">Tags</label>
-                <select
-                  name="tag"
-                  value={formData.tag}
-                  onChange={handleChange}
-                  className="w-full p-3 rounded-lg bg-white/20 text-black placeholder-white/70 outline-none"
-                  required
+            {vendor?.isProfileComplete ? (
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Product Name */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
                 >
-                  <option value="">Select a tag</option>
-                  {Tags.map((tag, index) => (
-                    <option key={index} value={tag}>
-                      {tag}
-                    </option>
-                  ))}
-                </select>
-              </motion.div>
+                  <label className="text-white font-medium">Product Name</label>
+                  <input
+                    type="text"
+                    name="productName"
+                    value={formData.productName}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
+                    placeholder="Enter product name"
+                    required
+                  />
+                </motion.div>
 
-              {/* Availability */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.6 }}
-                className="flex items-center gap-2"
-              >
-                <input
-                  type="checkbox"
-                  name="available"
-                  checked={formData.available}
-                  onChange={handleCheck}
-                  className="w-5 h-5"
-                />
-                <span className="text-white font-medium">Available</span>
-              </motion.div>
-              {/* quantity */}
-              {check && (
+                {/* Price */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <label className="text-white font-medium">Quantity</label>
+                  <label className="text-white font-medium">Price (₹)</label>
                   <input
-                    type="text"
-                    name="quantity"
-                    value={formData.quantity}
+                    type="number"
+                    name="price"
+                    value={formData.price}
                     onChange={handleChange}
                     className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
-                    placeholder="Enter Quantity"
+                    placeholder="Enter price"
                     required
                   />
                 </motion.div>
-              )}
-              {/* Image Upload */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.7 }}
-              >
-                <label className="text-white font-medium">Product Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full text-white mt-2"
-                />
 
-                {preview && (
-                  <motion.img
+                {/* Tags */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <label className="text-white font-medium">Tags</label>
+                  <select
+                    name="tag"
+                    value={formData.tag}
+                    onChange={handleChange}
+                    className="w-full p-3 rounded-lg bg-white/20 text-black placeholder-white/70 outline-none"
+                    required
+                  >
+                    <option value="">Select a tag</option>
+                    {Tags.map((tag, index) => (
+                      <option key={index} value={tag}>
+                        {tag}
+                      </option>
+                    ))}
+                  </select>
+                </motion.div>
+
+                {/* Availability */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.6 }}
+                  className="flex items-center gap-2"
+                >
+                  <input
+                    type="checkbox"
+                    name="available"
+                    checked={formData.available}
+                    onChange={handleCheck}
+                    className="w-5 h-5"
+                  />
+                  <span className="text-white font-medium">Available</span>
+                </motion.div>
+                {/* quantity */}
+                {check && (
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    src={preview}
-                    alt="preview"
-                    className="w-32 h-32 rounded-lg object-cover mt-4 border border-white/40 shadow-lg"
-                  />
+                    transition={{ delay: 0.4 }}
+                  >
+                    <label className="text-white font-medium">Quantity</label>
+                    <input
+                      type="text"
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleChange}
+                      className="w-full p-3 rounded-lg bg-white/20 text-white placeholder-white/70 outline-none"
+                      placeholder="Enter Quantity"
+                      required
+                    />
+                  </motion.div>
                 )}
-              </motion.div>
+                {/* Image Upload */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                >
+                  <label className="text-white font-medium">
+                    Product Image
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="w-full text-white mt-2"
+                  />
 
-              {/* Submit Button */}
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.8 }}
-                type="submit"
-                className="w-full py-3 bg-white/30 hover:bg-white/50 transition text-white font-semibold rounded-lg shadow-lg backdrop-blur-lg"
-              >
-                {loading ? "adding...." : "Add product"}
-              </motion.button>
-            </form>
+                  {preview && (
+                    <motion.img
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      src={preview}
+                      alt="preview"
+                      className="w-32 h-32 rounded-lg object-cover mt-4 border border-white/40 shadow-lg"
+                    />
+                  )}
+                </motion.div>
+
+                {/* Submit Button */}
+                <motion.button
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                  type="submit"
+                  className="w-full py-3 bg-white/30 hover:bg-white/50 transition text-white font-semibold rounded-lg shadow-lg backdrop-blur-lg"
+                >
+                  {loading ? "adding...." : "Add product"}
+                </motion.button>
+              </form>
+            ) : (
+              <>
+                <motion.h1
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="text-3xl text-red-500 font-bold text-center mb-6"
+                >
+                  Register Your Business First
+                </motion.h1>
+                <div className=" justify-center flex">
+                  <button
+                    onClick={() => navigate("/registerBusiness")}
+                    className="ml-2 px-3 py-1 rounded-full
+                 bg-gradient-to-r from-green-500 to-emerald-500
+                 text-white text-[20px] font-semibold
+                 hover:scale-105 transition-all duration-200
+                 shadow-md hover:shadow-green-500/40"
+                  >
+                    Click here
+                  </button>
+                </div>
+              </>
+            )}
           </motion.div>
         )}
       </div>

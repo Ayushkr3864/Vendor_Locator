@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {useNavigate} from "react-router-dom"
 import Toast from "../components/Toast";
 import SuccessMessage from "./success";
 
@@ -22,7 +23,7 @@ const Register = () => {
     password: "",
     city: "",
   });
-
+  const naviagte = useNavigate()
   const [userForm, setUserForm] = useState({
     name: "",
     phone: "",
@@ -117,7 +118,7 @@ const handleVendorSubmit = async (e) => {
     setTimeout(() => {
       setShow(false);
       setSuccess(false)
-      naviagte("/vendorDash")
+      naviagte("/login")
     }, 2000);
      console.log("Toast triggered:", type, message,show);
     // alert("Vendor registered successfully 🎉");
@@ -164,7 +165,6 @@ const handleUserSubmit = async (e) => {
       setMessage(data.message);
       setType("error");
       setShow(true);
-      console.log("Toast triggered:", type, message, show);
       setTimeout(() => {
         setShow(false);
       }, 2000);
@@ -173,11 +173,17 @@ const handleUserSubmit = async (e) => {
      setMessage(data.message);
      setType("success");
      setShow(true);
-     setSuccess(true);
+    setSuccess(true);
+    setUserForm({
+      name: "",
+      phone: "",
+      email: "",
+      password: "",
+    });
      setTimeout(() => {
        setShow(false);
        setSuccess(false);
-       naviagte("/vendorDash");
+       naviagte("/login");
      }, 2000);
   } catch (err) {
     console.error(err);
@@ -216,44 +222,51 @@ const handleUserSubmit = async (e) => {
 
   return (
     <>
-      <div className="min-h-screen flex items-center mt-20 justify-center bg-linear-to-b from-[#D6E6FF] via-[#CFE1FF] to-white px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#D6E6FF] via-[#CFE1FF] to-white px-4">
         <Toast type={type} show={show} message={message} />
         <AnimatePresence>
           {" "}
           {success ? (
-            <SuccessMessage message={"Regitered successfully"} />
+            <SuccessMessage message={"Regitered successfully 🎉 "} />
           ) : (
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8"
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="w-full max-w-md bg-white/70 backdrop-blur-2xl rounded-3xl shadow-[0_20px_60px_rgba(15,43,82,0.2)] p-8"
             >
               {/* 🔘 Toggle Buttons */}
-              <div className="flex mb-6 rounded-xl overflow-hidden border">
+              <div className="relative flex mb-8 bg-[#EAF1FF] rounded-2xl p-1">
+                <motion.div
+                  layout
+                  className="absolute top-1 bottom-1 w-1/2 rounded-xl bg-[#0F2B52]"
+                  initial={false}
+                  animate={{ x: user ? "0%" : "100%" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+
                 <button
                   onClick={() => {
                     setUser(true);
                     setVendor(false);
                   }}
-                  className={`w-1/2 py-3 font-semibold ${
-                    user ? "bg-[#0F2B52] text-white" : "bg-white text-[#0F2B52]"
+                  className={`relative z-10 w-1/2 py-3 font-semibold transition ${
+                    user ? "text-white" : "text-[#0F2B52]"
                   }`}
                 >
-                  Register as User
+                  User
                 </button>
+
                 <button
                   onClick={() => {
                     setVendor(true);
                     setUser(false);
                   }}
-                  className={`w-1/2 py-3 font-semibold ${
-                    vendor
-                      ? "bg-[#0F2B52] text-white"
-                      : "bg-white text-[#0F2B52]"
+                  className={`relative z-10 w-1/2 py-3 font-semibold transition ${
+                    vendor ? "text-white" : "text-[#0F2B52]"
                   }`}
                 >
-                  Register as Vendor
+                  Vendor
                 </button>
               </div>
 
@@ -274,8 +287,8 @@ const handleUserSubmit = async (e) => {
 
                     <label className="block text-center cursor-pointer">
                       <input
-                          type="file"
-                          name="avatar"
+                        type="file"
+                        name="avatar"
                         hidden
                         accept="image/*"
                         onChange={handleImage}
@@ -295,40 +308,47 @@ const handleUserSubmit = async (e) => {
                     </label>
 
                     <input
-                        type="text"
-                        name="name"
+                      type="text"
+                      name="name"
                       placeholder="Full Name"
                       value={userForm.name}
                       onChange={handleUserChange}
                       className={inputClass}
                     />
                     <input
-                        type="tel"
-                        name="phone"
+                      type="tel"
+                      name="phone"
                       value={userForm.phone}
                       onChange={handleUserChange}
                       placeholder="Phone Number"
                       className={inputClass}
                     />
                     <input
-                        type="email"
-                        name="email"
+                      type="email"
+                      name="email"
                       value={userForm.email}
                       onChange={handleUserChange}
                       placeholder="Email"
                       className={inputClass}
                     />
                     <input
-                        type="password"
-                        name="password"
+                      type="password"
+                      name="password"
                       value={userForm.password}
                       onChange={handleUserChange}
                       placeholder="Password"
                       className={inputClass}
                     />
 
-                    <motion.button className="w-full rounded-xl bg-[#0F2B52] py-3 text-white font-semibold">
-                      Register User
+                    <motion.button
+                      className={`w-full rounded-xl bg-[#0F2B52] py-3 ${
+                        loading
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : "bg-[#0F2B52] hover:bg-[#0a1f3d]"
+                      } text-white font-semibold`}
+                      disabled={loading}
+                    >
+                      {loading ? "Registering...." : " Register User"}
                     </motion.button>
                   </motion.form>
                 )}

@@ -137,7 +137,7 @@ function Login() {
   
   return (
     <>
-      <div className="mt-20 mt-15 relative min-h-screen flex  flex-col justify-center items-center w-full">
+      <div className=" relative min-h-screen flex  flex-col justify-center items-center w-full">
         <Toast show={showtoast} message={toastMessage} type={toastType} />
         <div className="absolute inset-0">
           <img

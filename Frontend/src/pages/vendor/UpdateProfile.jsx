@@ -19,6 +19,7 @@ export default function VendorShopForm() {
     category: "",
     description: "",
     address: "",
+    businessName:""
   });
 
   const [image, setImage] = useState(null);
@@ -87,6 +88,7 @@ export default function VendorShopForm() {
       newFormData.append("category", formData.category);
       newFormData.append("address", formData.address);
       newFormData.append("description", formData.description);
+      newFormData.append("businessName",formData.businessName);
       if (image) {
         newFormData.append("shopImage", image);
       }
@@ -222,7 +224,30 @@ export default function VendorShopForm() {
                     Complete your shop details below
                   </p>
                 </motion.div>
-
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 }}
+                >
+                  <label className="block text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
+                    <span className="text-pink-500">●</span> Business Name *
+                  </label>
+                  <div className="relative">
+                    <MapPin
+                      size={18}
+                      className="absolute left-3 top-3.5 text-orange-500"
+                    />
+                    <input
+                      type="text"
+                      name="businessName"
+                      value={formData.businessName}
+                      onChange={handleChange}
+                      placeholder="Enter business name"
+                      className={`${inputClass} pl-10`}
+                      required
+                    />
+                  </div>
+                </motion.div>
                 {/* Category Selection */}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}

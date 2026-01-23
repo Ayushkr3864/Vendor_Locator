@@ -7,7 +7,7 @@ const updateProfile = async (req, res) => {
       if (!vendorId) {
         return res.status(400).json({ message: "Vendor ID is required" });
     }
-    const { category, address, description } = req.body;
+    const { category, address, description, businessName } = req.body;
     console.log(req.body);
     const updatedVendor = await vendorDB.findByIdAndUpdate(
       vendorId,
@@ -18,6 +18,7 @@ const updateProfile = async (req, res) => {
         isActive: true,
         isProfileComplete: true,
         shopImage: req.file?.path,
+        businessName,
       },
       { new: true, runValidators: true },
     );

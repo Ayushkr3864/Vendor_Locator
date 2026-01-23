@@ -229,25 +229,25 @@ function Navbar({ home }) {
             <div className="md:hidden pb-6 animate-fadeInUp">
               <div className="flex flex-col gap-4">
                 {/* Mobile User Profile */}
-                {isAuthenticated && currentUser && (
+                {user && (
                   <div className="flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl border border-white/20">
                     <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-semibold shadow-lg overflow-hidden">
-                      {userAvatar ? (
+                      {user?.avatar ? (
                         <img
-                          src={userAvatar}
-                          alt={userName}
+                          src={user?.avatar}
+                          alt={user?.name}
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <span>{getInitials(userName)}</span>
+                        <span>{user?.name}</span>
                       )}
                     </div>
                     <div className="flex-1">
                       <p className="text-white font-semibold truncate">
-                        {userName}
+                        {user?.name}
                       </p>
                       <p className="text-blue-300 text-sm truncate">
-                        {currentUser?.email || ""}
+                        {user?.email || ""}
                       </p>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ function Navbar({ home }) {
                   <span className="font-medium">Contact</span>
                 </a>
 
-                {isAuthenticated && currentUser ? (
+                {user ? (
                   <>
                     <button
                       onClick={handleNavigate}
@@ -299,12 +299,6 @@ function Navbar({ home }) {
                   </>
                 ) : (
                   <>
-                    <button
-                      onClick={() => navigate("/register")}
-                      className="mt-2 w-full px-6 py-3 backdrop-blur-xl bg-white/10 border border-white/20 text-white font-semibold rounded-full hover:bg-white/20 transition-all"
-                    >
-                      Join as Vendor
-                    </button>
                     <button
                       onClick={() => navigate("/login")}
                       className="w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 text-white font-semibold rounded-full shadow-lg"

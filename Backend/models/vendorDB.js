@@ -35,13 +35,17 @@ const vendorSchema = new mongoose.Schema(
 
     vendorimg: {
       type: String,
+      default: "https://cdn-icons-png.flaticon.com/512/847/847969.png",
     },
-    role:{type:String,default:"user"},
+    role: { type: String, default: "user" },
 
     /* =========================
        PHASE 2 – BUSINESS DETAILS
     ========================== */
-
+    shopName: {
+      type: String,
+      default: "",
+    },
     category: {
       type: String,
       enum: [

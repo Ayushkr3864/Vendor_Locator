@@ -10,7 +10,7 @@ import About from "./pages/About";
 import VendorDashboard from "./pages/vendor/VendorDash";
 import UserDashboard from "./pages/user/UserDash";
 import Product from "./pages/vendor/Product";
-import ListVendor from "./pages/vendor/ListVendort";
+import ListVendor from "./pages/user/ListVendort";
 import Protected from "./components/Protected";
 import VendorShopForm from "./pages/vendor/UpdateProfile";
 import ShowProduct from "./pages/vendor/ShowProduct";

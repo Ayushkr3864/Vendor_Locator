@@ -14,7 +14,7 @@ import {
   Settings,
   ChevronDown,
 } from "lucide-react";
-import { useAuth } from "../store/auth";
+import { useAuth } from "../../store/auth";
 
 function Navbar({ home }) {
   const navigate = useNavigate();
@@ -22,8 +22,7 @@ function Navbar({ home }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { getLoggedInUser , user, Logout } =
-    useAuth();
+  const { getLoggedInUser, user, Logout } = useAuth();
 
   useEffect(() => {
     getLoggedInUser();
@@ -45,7 +44,7 @@ function Navbar({ home }) {
 
   const handleLogout = () => {
     Logout();
-    navigate("/");
+    navigate("/user");
     setIsUserMenuOpen(false);
   };
 

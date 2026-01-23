@@ -18,12 +18,9 @@ const isLoggedIn = (req, res, next) => {
         isauthenticate: false,
       });
     }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // attach user data to request
     req.user = decoded;
-
-    next(); // VERY IMPORTANT
+    next();
   } catch (e) {
     if (e.name === "TokenExpiredError") {
       return res

@@ -15,7 +15,7 @@ function StatusBadge({ status }) {
           isCompleted ? "bg-green-500" : "bg-orange-500"
         }`}
       ></span>
-      {isCompleted ? "Completed" : "Pending"}
+      {isCompleted ? "profile Completed" : "Pending"}
     </span>
   );
 }

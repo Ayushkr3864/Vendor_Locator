@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ShoppingBag, Store } from "lucide-react";
 import { useNavigate } from "react-router";
 import AnimatedLoginButton from "../components/AnimatedButton";
-import Navbar from "../components/Navbar";
+
 import Toast from "../components/Toast";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 const api = import.meta.env.VITE_BACKEND_URL
@@ -104,7 +104,6 @@ function Login() {
        settoastType("error");
        settoastmessage(res_data.message || "Invalid email or password");
        setShowtoast(true);
-       localStorage.setItem("authenticate", false);
        return;
      }
 
@@ -112,7 +111,6 @@ function Login() {
      settoastType("success");
      settoastmessage("User login successful");
      setShowtoast(true);
-     localStorage.setItem("authenticate", true);
 
      setFormData({
        email: "",
@@ -121,7 +119,7 @@ function Login() {
      });
 
      setTimeout(() => {
-       navigate("/"); // 
+       navigate("/user"); // 
        setLoading(false);
      }, 1500);
    } catch (error) {
@@ -139,7 +137,6 @@ function Login() {
   
   return (
     <>
-      <Navbar />
       <div className="mt-20 mt-15 relative min-h-screen flex  flex-col justify-center items-center w-full">
         <Toast show={showtoast} message={toastMessage} type={toastType} />
         <div className="absolute inset-0">

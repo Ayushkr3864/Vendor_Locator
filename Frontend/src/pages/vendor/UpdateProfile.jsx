@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import SuccessMessage from "../success";
 import { useEffect } from "react";
-import VendorNavbar from "../../components/VendordashNav";
+import VendorNavbar from "./VendordashNav";
 const api = import.meta.env.VITE_BACKEND_URL;
 export default function VendorShopForm() {
   const [formData, setFormData] = useState({

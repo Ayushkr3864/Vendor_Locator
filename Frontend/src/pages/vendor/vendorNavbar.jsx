@@ -15,6 +15,8 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useAuth } from "../../store/auth";
+import StatusBadge from "../../components/StatusBadge";
+import ActiveBadge from "../../components/ActiveBadge";
 
 function Navbar({ home }) {
   const navigate = useNavigate();
@@ -33,15 +35,6 @@ function Navbar({ home }) {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  // const handleNavigate = () => {
-  //   if (isAuthenticated) {
-  //     if (user?.role === "vendor" || vendor) return navigate("/vendorDash");
-  //     navigate("/userDash");
-  //   }
-  //   navigate("/register");
-  // };
-
   const handleLogout = () => {
     Logout();
     navigate("/vendor");
@@ -99,20 +92,23 @@ function Navbar({ home }) {
                 <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
                 <span className="font-medium">Home</span>
               </a>
-              <a
-                onClick={() => navigate("/explore/vendor")}
-                className="group flex items-center gap-2 text-blue-100 cursor-pointer hover:text-white transition-colors duration-300"
-              >
-                <Compass className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">Explore</span>
-              </a>
-              <a
-                href="#"
-                className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"
-              >
-                <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                <span className="font-medium">About</span>
-              </a>
+              {vendor && (
+                <>
+                  <div className="flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
+                    <span className="text-blue-200 font-medium truncate max-w-[140px]">
+                      {vendor.businessname || "business"}
+                    </span>
+
+                    <span className="w-px h-4 bg-white/20" />
+
+                    <ActiveBadge isActive={vendor?.isActive} />
+
+                    <span className="w-px h-4 bg-white/20" />
+
+                    <StatusBadge status={vendor?.isProfileComplete} />
+                  </div>
+                </>
+              )}
               <a
                 href="#"
                 className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300"

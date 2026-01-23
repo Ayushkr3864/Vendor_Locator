@@ -2,7 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Toast from "../components/Toast";
 import SuccessMessage from "./success";
-import Navbar from "../components/Navbar";
+
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 console.log(API_URL);
 
@@ -216,8 +216,6 @@ const handleUserSubmit = async (e) => {
 
   return (
     <>
-      <Navbar />
-
       <div className="min-h-screen flex items-center mt-20 justify-center bg-linear-to-b from-[#D6E6FF] via-[#CFE1FF] to-white px-4">
         <Toast type={type} show={show} message={message} />
         <AnimatePresence>

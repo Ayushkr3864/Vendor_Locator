@@ -1,5 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
+import {useNavigate} from "react-router-dom"
 import {
   Store,
   Users,
@@ -58,7 +59,7 @@ const VendorLandingPage = () => {
     "Real-time analytics",
     "Mobile-friendly interface",
   ];
-
+  const navigate = useNavigate()
   return (
     <>
       <Navbar   />

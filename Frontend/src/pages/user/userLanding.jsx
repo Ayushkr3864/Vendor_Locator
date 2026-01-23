@@ -12,8 +12,8 @@ import {
   Award,
   TrendingUp,
 } from "lucide-react";
-import {useNavigate} from "react-router-dom"
-import Navbar from "../components/Navbar"
+import { useNavigate } from "react-router-dom";
+import Navbar from "./UserNavbar";
 export default function FeaturesPage() {
   const [scrollY, setScrollY] = useState(0);
   const [visibleCards, setVisibleCards] = useState([]);
@@ -24,7 +24,7 @@ export default function FeaturesPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const observer = new IntersectionObserver(

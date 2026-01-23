@@ -1,14 +1,14 @@
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router";
-import Layout from "./Layout";
-import Home from "./pages/Home";
-import Error from "./pages/Error";
+
+import Home from "./components/home";
+import Error from "./components/Error";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import About from "./pages/About";
 import VendorDashboard from "./pages/vendor/VendorDash";
-import UserDashboard from "./pages/UserDash";
+import UserDashboard from "./pages/user/UserDash";
 import Product from "./pages/vendor/Product";
 import ListVendor from "./pages/vendor/ListVendort";
 import Protected from "./components/Protected";
@@ -17,6 +17,7 @@ import ShowProduct from "./pages/vendor/ShowProduct";
 import VendorDetails from "./pages/vendor/VendorDetails"
 import FeaturesPage from "./pages/FeaturesPage"
 import VendorLanding from "./pages/vendor/LandingPage"
+import UserLanding from "./pages/user/userLanding"
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/vendor" element={<VendorLanding />} />
+        <Route path="/user" element={<UserLanding/>}></Route>
         <Route
           path="/vendorDash"
           element={

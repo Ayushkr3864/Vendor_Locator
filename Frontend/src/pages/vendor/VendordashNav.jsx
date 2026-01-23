@@ -10,7 +10,7 @@ import {
   ShoppingBag,
   Store,
 } from "lucide-react";
-import { useAuth } from "../store/auth";
+import { useAuth } from "../../store/auth";
 import { useEffect } from "react";
 import { color } from "framer-motion";
 

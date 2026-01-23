@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import VendorNavbar from "../../components/VendordashNav";
+import VendorNavbar from "./VendordashNav";
 import SuccessMessage from "../success";
 const api = import.meta.env.VITE_BACKEND_URL;
 import Toast from "../../components/Toast";

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import VendorNavbar from "../../components/VendordashNav";
+import VendorNavbar from "./VendordashNav";
 import { ShoppingBag, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";

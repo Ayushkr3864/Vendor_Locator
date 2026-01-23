@@ -36,6 +36,7 @@ const vendorSchema = new mongoose.Schema(
     vendorimg: {
       type: String,
     },
+    role:{type:String,default:"user"},
 
     /* =========================
        PHASE 2 – BUSINESS DETAILS

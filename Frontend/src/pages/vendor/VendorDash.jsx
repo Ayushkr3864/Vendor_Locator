@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import StatusBadge from "../../components/StatusBadge";
 import ActiveBadge from "../../components/ActiveBadge";
-import VendorNavbar from "../../components/VendordashNav";
+import VendorNavbar from "./VendordashNav";
 const API = import.meta.env.VITE_BACKEND_URL;
 const VendorDashboard = () => {
   const { vendor, fetchUser, loading, totalProducts } = useAuth();
@@ -73,11 +73,21 @@ const VendorDashboard = () => {
                 <p className="mb-1">
                   <span className="font-medium">Contact:</span> {vendor?.phone}
                 </p>
-                {vendor?.location && (
+                {!vendor.isProfileComplete && (
                   <p className="flex items-center gap-2 mt-2">
                     <MapPin size={16} className="text-green-600" />
                     <span>
-                      {vendor?.location.lat}, {vendor?.location.long}
+                      Register your business to featured{" "}
+                      <button
+                        onClick={() => navigate("/registerBusiness")}
+                        className="ml-2 px-3 py-1 rounded-full
+                 bg-gradient-to-r from-green-500 to-emerald-500
+                 text-white text-xs font-semibold
+                 hover:scale-105 transition-all duration-200
+                 shadow-md hover:shadow-green-500/40"
+                      >
+                        Click here
+                      </button>
                     </span>
                   </p>
                 )}

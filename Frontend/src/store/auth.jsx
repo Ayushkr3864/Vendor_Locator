@@ -102,6 +102,33 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+   const getLoggedInUser = useCallback(async () => {
+     try {
+       setLoading(true);
+
+       const res = await fetch(`${api}/user/get`, {
+         method: "GET",
+         credentials: "include", // 👈 cookie
+       });
+
+       const data = await res.json();
+
+       if (!res.ok) {
+         setUser(null);
+         return;
+       }
+
+       setUser(data.user);
+     } catch (err) {
+       console.error("Fetch user failed:", err);
+       setUser(null);
+     } finally {
+       setLoading(false);
+     }
+   }, []);
+  useEffect(() => {
+    getLoggedInUser()
+  },[getLoggedInUser])
   return (
     <authContext.Provider
       value={{
@@ -119,6 +146,7 @@ export const AuthProvider = ({ children }) => {
         setMessage,
         settoastType,
         totalProducts,
+        getLoggedInUser,
       }}
     >
       {children}

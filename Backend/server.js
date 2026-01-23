@@ -43,6 +43,6 @@ app.use("/api/featuredVendor", featuredVendor)
 app.use("/api", vendorDetails)
 app.use("/api", deleteProduct)
 // user route
-app.use("/api/user/register",userRegister)
+app.use("/api/user",userRegister)
 app.listen(3000,()=>{console.log("Vendor Locator API is running at port 3000");
 })

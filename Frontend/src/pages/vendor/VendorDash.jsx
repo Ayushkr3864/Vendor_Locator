@@ -12,17 +12,16 @@ import {
 } from "lucide-react";
 import StatusBadge from "../../components/StatusBadge";
 import ActiveBadge from "../../components/ActiveBadge";
-import VendorNavbar from "../../components/VendorNav";
+import VendorNavbar from "../../components/VendordashNav";
 const API = import.meta.env.VITE_BACKEND_URL;
 const VendorDashboard = () => {
-  const { vendor, fetchUser, loading,totalProducts } = useAuth();
+  const { vendor, fetchUser, loading, totalProducts } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUser();
   }, []);
 
- 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -33,7 +32,7 @@ const VendorDashboard = () => {
 
   return (
     <>
-      <VendorNavbar/>
+      <VendorNavbar />
       <div className="min-h-screen bg-gray-100 flex flex-col">
         {/* Header */}
 

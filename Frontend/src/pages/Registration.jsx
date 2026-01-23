@@ -149,10 +149,10 @@ const handleUserSubmit = async (e) => {
     formData.append("password", userForm.password);
 
     if (image) {
-      formData.append("image", image);
+      formData.append("avatar", image);
     }
 
-    const res = await fetch(`${API_URL}/api/user/register`, {
+    const res = await fetch(`${API_URL}/user/register`, {
       method: "POST",
       body: formData,
     });
@@ -160,21 +160,38 @@ const handleUserSubmit = async (e) => {
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.message || "Registration failed");
-      return;
+      console.log(data.message);
+      setMessage(data.message);
+      setType("error");
+      setShow(true);
+      console.log("Toast triggered:", type, message, show);
+      setTimeout(() => {
+        setShow(false);
+      }, 2000);
+      return; 
     }
-
-    alert("User registered successfully 🎉");
+     setMessage(data.message);
+     setType("success");
+     setShow(true);
+     setSuccess(true);
+     setTimeout(() => {
+       setShow(false);
+       setSuccess(false);
+       naviagte("/vendorDash");
+     }, 2000);
   } catch (err) {
     console.error(err);
-    alert("Something went wrong");
+     console.error(err);
+     setMessage("something went wrong");
+     setType("error");
+     setShow(true);
+     setTimeout(() => {
+       setShow(false);
+     }, 5000);
   } finally {
     setLoading(false);
   }
 };
-
-
-  // 📍 GET LOCATION
   const handleGetLocation = () => {
     if (!navigator.geolocation) {
       setLocError("Geolocation not supported");
@@ -259,7 +276,8 @@ const handleUserSubmit = async (e) => {
 
                     <label className="block text-center cursor-pointer">
                       <input
-                        type="file"
+                          type="file"
+                          name="avatar"
                         hidden
                         accept="image/*"
                         onChange={handleImage}
@@ -279,28 +297,32 @@ const handleUserSubmit = async (e) => {
                     </label>
 
                     <input
-                      type="text"
+                        type="text"
+                        name="name"
                       placeholder="Full Name"
                       value={userForm.name}
                       onChange={handleUserChange}
                       className={inputClass}
                     />
                     <input
-                      type="tel"
+                        type="tel"
+                        name="phone"
                       value={userForm.phone}
                       onChange={handleUserChange}
                       placeholder="Phone Number"
                       className={inputClass}
                     />
                     <input
-                      type="email"
+                        type="email"
+                        name="email"
                       value={userForm.email}
                       onChange={handleUserChange}
                       placeholder="Email"
                       className={inputClass}
                     />
                     <input
-                      type="password"
+                        type="password"
+                        name="password"
                       value={userForm.password}
                       onChange={handleUserChange}
                       placeholder="Password"

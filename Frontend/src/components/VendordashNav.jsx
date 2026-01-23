@@ -14,7 +14,7 @@ import { useAuth } from "../store/auth";
 import { useEffect } from "react";
 import { color } from "framer-motion";
 
-export default function VendorNavbar() {
+export default function VendordashNav() {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate()

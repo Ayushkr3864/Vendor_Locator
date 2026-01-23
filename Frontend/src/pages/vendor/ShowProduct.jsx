@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import VendorNavbar from "../../components/VendorNav";
+import VendorNavbar from "../../components/VendordashNav";
 import { ShoppingBag, Upload } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Toast from "../../components/Toast"
+import Toast from "../../components/Toast";
 
 const API = "http://localhost:3000/api";
 
@@ -14,9 +14,9 @@ function ShowProduct() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-    const [showtoast, setShowtoast] = useState(false);
-    const [toastType, settoastType] = useState("success")
-    const [Message,setMessage] = useState("")
+  const [showtoast, setShowtoast] = useState(false);
+  const [toastType, settoastType] = useState("success");
+  const [Message, setMessage] = useState("");
 
   const limit = 6;
 
@@ -43,7 +43,7 @@ function ShowProduct() {
     fetchProducts(page);
   }, [page]);
   const deleteProduct = async (productId) => {
-   setLoading(true)
+    setLoading(true);
     try {
       const res = await fetch(`${API}/deleteProduct/${productId}`, {
         method: "DELETE",
@@ -59,9 +59,9 @@ function ShowProduct() {
         }, 2000);
         return;
       }
-       setProducts((prev) =>
-         prev.filter((product) => product._id !== productId),
-       );
+      setProducts((prev) =>
+        prev.filter((product) => product._id !== productId),
+      );
       settoastType("success");
       setMessage(data.message || "product deleted successfully");
       setShowtoast(true);
@@ -76,7 +76,7 @@ function ShowProduct() {
     } finally {
       setLoading(false);
     }
- };
+  };
   return (
     <>
       <VendorNavbar />
@@ -141,7 +141,10 @@ function ShowProduct() {
                     {/* <button className="text-blue-600 hover:underline mr-3">
                       Edit
                     </button> */}
-                    <button className="text-red-600 hover:underline" onClick={()=>(deleteProduct(`${p._id}`))}>
+                    <button
+                      className="text-red-600 hover:underline"
+                      onClick={() => deleteProduct(`${p._id}`)}
+                    >
                       Delete
                     </button>
                   </td>

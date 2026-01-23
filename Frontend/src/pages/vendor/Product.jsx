@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import VendorNavbar from "../../components/VendorNav";
+import VendorNavbar from "../../components/VendordashNav";
 import SuccessMessage from "../success";
 const api = import.meta.env.VITE_BACKEND_URL;
-import Toast from "../../components/Toast"
-import { useAuth } from "../../store/auth"
-import {useNavigate} from "react-router-dom"
+import Toast from "../../components/Toast";
+import { useAuth } from "../../store/auth";
+import { useNavigate } from "react-router-dom";
 
 const Tags = [
   "new",
@@ -27,8 +27,8 @@ const Tags = [
   "handcrafted",
 ];
 const CreateProduct = () => {
-  const navigate = useNavigate()
-  const {Logout} = useAuth()
+  const navigate = useNavigate();
+  const { Logout } = useAuth();
   const [productImg, setProductImg] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,13 +36,13 @@ const CreateProduct = () => {
   const [showtoast, setShowtoast] = useState(false);
   const [toastType, settoastType] = useState("success");
   const [message, setMessage] = useState("");
-  const [check,setCheck] = useState(false)
+  const [check, setCheck] = useState(false);
   const [formData, setFormData] = useState({
     productName: "",
     price: "",
     available: false,
     tag: "",
-    quantity:""
+    quantity: "",
   });
 
   // Handle input changes
@@ -51,12 +51,11 @@ const CreateProduct = () => {
       ...formData,
       [e.target.name]: e.target.value,
     });
-    
   };
   const handleCheck = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.checked })
-    setCheck(e.target.checked)
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.checked });
+    setCheck(e.target.checked);
+  };
 
   // Handle Image Upload
   const handleImageChange = (e) => {
@@ -83,25 +82,27 @@ const CreateProduct = () => {
       });
       const data = await res.json();
       console.log(res);
-      
+
       if (!res.ok) {
-          if (!res.ok) {
-            settoastType("error");
-            setMessage(data.message || "Invalid email or password");
-            setShowtoast(true);
+        if (!res.ok) {
+          settoastType("error");
+          setMessage(data.message || "Invalid email or password");
+          setShowtoast(true);
+          setTimeout(() => {
+            setShowtoast(false);
+          }, 2000);
+          if (
+            res.status == 401 &&
+            data.message == "Token expired please login again"
+          ) {
             setTimeout(() => {
-              setShowtoast(false)
-            }, 2000)
-            if (
-              res.status == 401 &&
-              data.message == "Token expired please login again"
-            ) {
-             setTimeout(()=>{ Logout();
-             navigate("/login");},3000)
-            }
-              return;
+              Logout();
+              navigate("/login");
+            }, 3000);
           }
-      };
+          return;
+        }
+      }
       setTimeout(() => {
         setSuccess(true);
         setTimeout(() => {
@@ -113,8 +114,8 @@ const CreateProduct = () => {
             available: "",
             tag: "",
           });
-          setProductImg(null)
-          setPreview(null)
+          setProductImg(null);
+          setPreview(null);
         }, 3000);
       }, 2000);
 

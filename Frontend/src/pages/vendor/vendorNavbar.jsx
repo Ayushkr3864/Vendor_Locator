@@ -14,7 +14,7 @@ import {
   Settings,
   ChevronDown,
 } from "lucide-react";
-import { useAuth } from "../store/auth";
+import { useAuth } from "../../store/auth";
 
 function Navbar({ home }) {
   const navigate = useNavigate();
@@ -22,12 +22,11 @@ function Navbar({ home }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const { getLoggedInUser , user, Logout } =
-    useAuth();
+  const { fetchUser, vendor, Logout,isAuthenticated } = useAuth();
 
   useEffect(() => {
-    getLoggedInUser();
-  }, [getLoggedInUser]);
+    fetchUser();
+  }, [fetchUser]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -45,7 +44,7 @@ function Navbar({ home }) {
 
   const handleLogout = () => {
     Logout();
-    navigate("/");
+    navigate("/vendor");
     setIsUserMenuOpen(false);
   };
 
@@ -70,11 +69,7 @@ function Navbar({ home }) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrollY > 50
             ? "backdrop-blur-xl bg-slate-900/80 border-b border-white/10 shadow-2xl"
-            : `${
-                home == "true"
-                  ? "bg-transparent"
-                  : "bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 overflow-hidden"
-              }`
+            : "bg-slate-900 border-b border-emerald-500/30 shadow-lg"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -82,7 +77,7 @@ function Navbar({ home }) {
             {/* Logo */}
             <div
               className="flex items-center gap-3 group cursor-pointer"
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/vendor")}
             >
               <div className="w-12 h-12 bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
                 <MapPin className="w-6 h-6 text-white" />
@@ -98,7 +93,7 @@ function Navbar({ home }) {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-8">
               <a
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/vendor")}
                 className="group flex items-center gap-2 text-blue-100 hover:text-white transition-colors duration-300 cursor-pointer"
               >
                 <Home className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -128,8 +123,8 @@ function Navbar({ home }) {
             </div>
 
             {/* User Profile or CTA Button */}
-            <div className="hidden md:block">
-              {user ? (
+            <div className="hidden md:block z-10">
+              {vendor ? (
                 <div className="relative">
                   <button
                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
@@ -137,19 +132,19 @@ function Navbar({ home }) {
                   >
                     {/* Avatar */}
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white font-semibold shadow-lg overflow-hidden">
-                      {user?.avatar ? (
+                      {vendor?.vendorimg ? (
                         <img
-                          src={user.avatar}
-                          alt={user?.avatar}
+                          src={vendor?.vendorimg}
+                          alt={vendor?.avatar}
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <span className="text-sm">{user?.name}</span>
+                        <span className="text-sm">{vendor?.name}</span>
                       )}
                     </div>
                     {/* Username */}
                     <span className="text-white font-medium max-w-[120px] truncate">
-                      {user?.name}
+                      {vendor?.name}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 text-blue-200 transition-transform duration-300 ${
@@ -160,18 +155,18 @@ function Navbar({ home }) {
 
                   {/* Dropdown Menu */}
                   {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-fadeInUp">
+                    <div className="absolute right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl overflow-hidden animate-fadeInUp ">
                       <div className="p-4 border-b border-white/10">
                         <p className="text-white font-semibold truncate">
-                          {user?.name}
+                          {vendor?.name}
                         </p>
                         <p className="text-blue-300 text-sm truncate">
-                          {user?.email || ""}
+                          {vendor?.email || ""}
                         </p>
                       </div>
                       <div className="py-2">
                         <button
-                          // onClick={handleNavigate}
+                          onClick={() => navigate("/vendorDash")}
                           className="w-full flex items-center gap-3 px-4 py-3 text-blue-100 hover:text-white hover:bg-white/10 transition-all duration-300"
                         >
                           <User className="w-4 h-4" />
@@ -283,7 +278,7 @@ function Navbar({ home }) {
                   <span className="font-medium">Contact</span>
                 </a>
 
-                {isAuthenticated && currentUser ? (
+                {isAuthenticated && vendor ? (
                   <>
                     <button
                       onClick={handleNavigate}

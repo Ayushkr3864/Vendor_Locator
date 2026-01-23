@@ -16,7 +16,7 @@ import VendorShopForm from "./pages/vendor/UpdateProfile";
 import ShowProduct from "./pages/vendor/ShowProduct";
 import VendorDetails from "./pages/vendor/VendorDetails"
 import FeaturesPage from "./pages/FeaturesPage"
-
+import VendorLanding from "./pages/vendor/LandingPage"
 function App() {
   return (
     <>
@@ -25,6 +25,7 @@ function App() {
         <Route path="/register" element={<Registration />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
+        <Route path="/vendor" element={<VendorLanding />} />
         <Route
           path="/vendorDash"
           element={

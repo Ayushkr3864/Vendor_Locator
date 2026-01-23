@@ -18,7 +18,6 @@ function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    role: "vendor",
   });
  
   const navigate = useNavigate();
@@ -65,7 +64,7 @@ function Login() {
       });
 
       setTimeout(() => {
-        navigate("/vendorDash")
+        navigate("/vendor")
         setLoading(false)
       }, 1500);
     } catch (error) {
@@ -79,6 +78,63 @@ function Login() {
       setLoading(false)
     }
   };
+
+ const handleUserLogin = async (e) => {
+   e.preventDefault();
+
+   try {
+     setLoading(true);
+
+     const res = await fetch(`${api}/user/login`, {
+       method: "POST",
+       headers: {
+         "Content-Type": "application/json",
+       },
+       credentials: "include", // 👈 cookie ke liye MUST
+       body: JSON.stringify({
+         email: formData.email,
+         password: formData.password,
+       }),
+     });
+
+     const res_data = await res.json();
+     console.log(res_data);
+
+     if (!res.ok) {
+       settoastType("error");
+       settoastmessage(res_data.message || "Invalid email or password");
+       setShowtoast(true);
+       localStorage.setItem("authenticate", false);
+       return;
+     }
+
+     // ✅ success
+     settoastType("success");
+     settoastmessage("User login successful");
+     setShowtoast(true);
+     localStorage.setItem("authenticate", true);
+
+     setFormData({
+       email: "",
+       password: "",
+       role: "user",
+     });
+
+     setTimeout(() => {
+       navigate("/"); // 
+       setLoading(false);
+     }, 1500);
+   } catch (error) {
+     console.error(error);
+     settoastType("error");
+     settoastmessage("Something went wrong. Please try again.");
+     setShowtoast(true);
+     localStorage.setItem("authenticate", false);
+   } finally {
+     setLoading(false);
+   }
+ };
+
 
   
   return (
@@ -173,6 +229,7 @@ function Login() {
               {active === "user" && (
                 <motion.form
                   key="user-form"
+                  onSubmit={handleUserLogin}
                   className="space-y-6"
                   initial={{ opacity: 0, y: -100 }}
                   animate={{ opacity: 1, y: 0 }}

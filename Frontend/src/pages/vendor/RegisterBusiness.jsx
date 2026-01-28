@@ -93,12 +93,14 @@ export default function VendorShopForm() {
         newFormData.append("shopImage", image);
       }
       setLoading(true);
-      const res = await fetch(`${api}/updateProfile/${vendorId}`, {
+      const res = await fetch(`${api}/registerBusiness/${vendorId}`, {
         method: "PUT",
         credentials: "include",
         body: newFormData,
       });
       const data = await res.json();
+      console.log(data);
+      
       if (!res.ok) throw new Error("unable to update profile");
       setTimeout(() => {
         setLoading(false);

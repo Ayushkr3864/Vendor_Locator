@@ -1,1 +1,31 @@
+
+
+/* @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap'); */
 @import "tailwindcss";
+
+/* @tailwind base;
+@tailwind components; */
+/* @tailwind utilities; */
+
+/* @layer base {
+  :root {
+    --bg: #0b0e14;
+    --surface: #121826;
+    --ink: #e6e9f0;
+    --muted: #9aa4bf;
+    --accent: #2aff9d;
+    --accent-2: #ffb703;
+  }
+
+  body {
+    font-family: "IBM Plex Sans", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+  }
+}
+
+@layer utilities {
+  .font-editorial {
+    font-family: "Fraunces", serif;
+  }
+} */

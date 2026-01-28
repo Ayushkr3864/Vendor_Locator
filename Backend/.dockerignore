@@ -1,0 +1,29 @@
+# Node dependencies
+node_modules
+
+# Build output
+dist
+build
+
+# Environment & secrets
+.env
+
+
+# Logs
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Git & editor files
+.git
+.gitignore
+.vscode
+.idea
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Docker files 
+docker-compose.yml
+Dockerfile

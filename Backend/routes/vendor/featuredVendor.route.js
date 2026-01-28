@@ -1,7 +1,7 @@
-const express = require("express")
-const featuredVendor = require("../../controllers/vendor/featuredVendor.controller")
+const express = require("express");
+const featuredVendor = require("../../controllers/vendor/featuredVendor.controller");
 const app = express.Router();
+const { apiLimiter } = require("../../rateLimiter/limiter");
+app.get("/", apiLimiter, featuredVendor);
 
-app.get("/", featuredVendor)
-
-module.exports = app
+module.exports = app;

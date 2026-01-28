@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 
 const api = import.meta.env.VITE_BACKEND_URL;
-
+import Loading from "./Loading";
 const ProtectedRoute = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // 👈 null = unknown
   const [role,setRole] = useState()
@@ -23,7 +23,10 @@ const ProtectedRoute = ({ children }) => {
       console.error(err);
       setIsAuthenticated(false);
     } finally {
-      setLoading(false);
+    
+        setLoading(false);
+      
+      
     }
   }, []);
 
@@ -32,9 +35,7 @@ const ProtectedRoute = ({ children }) => {
   }, [checkAuth]);
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        Checking authentication...
-      </div>
+      <Loading/>
     );
   }
   if (!isAuthenticated) {

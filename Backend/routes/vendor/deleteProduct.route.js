@@ -1,8 +1,15 @@
 const express = require("express");
-const app = express.Router()
+const app = express.Router();
 const isLoggedIn = require("../../middleware/isLoggedIn");
 const isVendor = require("../../middleware/vendorAuth");
-const deleteProduct = require("../../controllers/vendor/deleteProduct")
-app.delete("/deleteProduct/:productId",isLoggedIn,isVendor, deleteProduct)
+const deleteProduct = require("../../controllers/vendor/deleteProduct");
+const { apiLimiter } = require("../../rateLimiter/limiter");
+app.delete(
+  "/deleteProduct/:productId",
+  apiLimiter,
+  isLoggedIn,
+  isVendor,
+  deleteProduct,
+);
 
-module.exports = app
+module.exports = app;

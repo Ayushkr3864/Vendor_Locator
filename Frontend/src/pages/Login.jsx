@@ -34,7 +34,8 @@ function Login() {
     e.preventDefault();
 
     try {
-      setLoading(true)
+      setLoading(true);
+
       const res = await fetch(`${api}/vendor/login`, {
         method: "POST",
         headers: {
@@ -46,17 +47,26 @@ function Login() {
 
       const res_data = await res.json();
       console.log(res_data);
+
       if (!res.ok) {
         settoastType("error");
         settoastmessage(res_data.message || "Invalid email or password");
         setShowtoast(true);
-        localStorage.setItem("authenticate",false)
+
+        setTimeout(() => {
+          setShowtoast(false);
+        }, 2000);
         return;
       }
+
       settoastType("success");
       settoastmessage("Vendor login successful");
       setShowtoast(true);
-       localStorage.setItem("authenticate", true);
+
+      setTimeout(() => {
+        setShowtoast(false);
+      }, 2000);
+
       setFormData({
         email: "",
         password: "",
@@ -64,74 +74,92 @@ function Login() {
       });
 
       setTimeout(() => {
-        navigate("/vendor")
-        setLoading(false)
+        navigate("/vendor");
+        setLoading(false);
       }, 1500);
     } catch (error) {
       console.error(error);
+
       settoastType("error");
       settoastmessage("Something went wrong. Please try again.");
       setShowtoast(true);
-      setLoading(false)
-       localStorage.setItem("authenticate", false);
+
+      setTimeout(() => {
+        setShowtoast(false);
+      }, 2000);
+
+      localStorage.setItem("authenticate", false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
- const handleUserLogin = async (e) => {
-   e.preventDefault();
 
-   try {
-     setLoading(true);
+const handleUserLogin = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
-     const res = await fetch(`${api}/user/login`, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       credentials: "include", // 👈 cookie ke liye MUST
-       body: JSON.stringify({
-         email: formData.email,
-         password: formData.password,
-       }),
-     });
+  try {
+    const res = await fetch(`${api}/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+      }),
+    });
 
-     const res_data = await res.json();
-     console.log(res_data);
+    const res_data = await res.json();
+    console.log(res_data);
 
-     if (!res.ok) {
-       settoastType("error");
-       settoastmessage(res_data.message || "Invalid email or password");
-       setShowtoast(true);
-       return;
-     }
+    // ❌ ERROR RESPONSE
+    if (!res.ok) {
+      settoastType("error");
+      settoastmessage(res_data.message || "Invalid email or password");
+      setShowtoast(true);
 
-     // ✅ success
-     settoastType("success");
-     settoastmessage("User login successful");
-     setShowtoast(true);
+      setTimeout(() => {
+        setShowtoast(false);
+      }, 2000);
 
-     setFormData({
-       email: "",
-       password: "",
-       role: "user",
-     });
+      return;
+    }
 
-     setTimeout(() => {
-       navigate("/user"); // 
-       setLoading(false);
-     }, 1500);
-   } catch (error) {
-     console.error(error);
-     settoastType("error");
-     settoastmessage("Something went wrong. Please try again.");
-     setShowtoast(true);
-     localStorage.setItem("authenticate", false);
-   } finally {
-     setLoading(false);
-   }
- };
+    // ✅ SUCCESS
+    settoastType("success");
+    settoastmessage("User login successful");
+    setShowtoast(true);
+
+    setFormData({
+      email: "",
+      password: "",
+      role: "user",
+    });
+
+    setTimeout(() => {
+      setShowtoast(false);
+      navigate("/user");
+    }, 2000);
+  } catch (error) {
+    console.error(error);
+
+    settoastType("error");
+    settoastmessage("Something went wrong. Please try again.");
+    setShowtoast(true);
+
+    setTimeout(() => {
+      setShowtoast(false);
+    }, 2000);
+
+    localStorage.setItem("authenticate", false);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
   

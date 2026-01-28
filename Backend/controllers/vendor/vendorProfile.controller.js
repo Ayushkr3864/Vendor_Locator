@@ -3,9 +3,13 @@ const productDB = require("../../models/ProductDB")
 const vendorProfile = async (req, res) => {
   try {
     const vendor = await vendorDB
-      .findById( req.user.id )
+      .findOne( {email:req.user.email} )
           .select({ password: 0, __v: 0 });
     console.log(vendor);
+    console.log(req.user.email);
+    console.log("found",vendor);
+    
+    
     const products = await productDB.countDocuments({vendorId:req.user.id})
     vendor.totalProduct = products
     if (!vendor)
@@ -17,4 +21,6 @@ const vendorProfile = async (req, res) => {
     return res.status(500).json({ success: false, message: e.message });
   }
 };
+
+
 module.exports = vendorProfile

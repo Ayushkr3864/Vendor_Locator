@@ -14,6 +14,7 @@ import StatusBadge from "../../components/StatusBadge";
 import ActiveBadge from "../../components/ActiveBadge";
 import VendorNavbar from "./VendordashNav";
 const API = import.meta.env.VITE_BACKEND_URL;
+import Loading from "../../components/Loading"
 const VendorDashboard = () => {
   const { vendor, fetchUser, loading, totalProducts } = useAuth();
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const VendorDashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-lg">Loading vendor data...</div>
+       <Loading/>
       </div>
     );
   }
@@ -46,56 +47,65 @@ const VendorDashboard = () => {
               animate={{ opacity: 1, y: 0 }}
             >
               <div>
-                <div className="flex justify-between">
-                  <h2 className="text-xl font-semibold mb-3 flex items-center gap-2">
-                    <Store className="text-green-600" /> Vendor Info
+                <div className="flex justify-between text-[var(--surface)]">
+                  <h2 className="text-xl font-semibold mb-3 text-[var(--surface)] flex items-center gap-2">
+                    <Store className="text-black" /> Vendor Info
                   </h2>
                   <h2>
                     <StatusBadge status={vendor?.isProfileComplete} />
                   </h2>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between mb-2 text-[var(--surface)]">
                   <p>
-                    <span className="font-medium">Name:</span> {vendor?.name}
+                    <span className="font-medium text-[var(--surface)]">
+                      Name:
+                    </span>{" "}
+                    {vendor?.name}
                   </p>
                   <ActiveBadge isActive={vendor?.isActive} />
                 </div>
-                <p className="mb-1">
-                  <span className="font-medium">Category:</span>{" "}
-                  {vendor?.category}
-                </p>
-                <p className="mb-1">
-                  <span className="font-medium">Email:</span> {vendor?.email}
-                </p>
-                <p className="mb-1">
-                  <span className="font-medium">City:</span> {vendor?.city}
-                </p>
-                <p className="mb-1">
-                  <span className="font-medium">Contact:</span> {vendor?.phone}
-                </p>
-                {!vendor.isProfileComplete && (
-                  <p className="flex items-center gap-2 mt-2">
-                    <MapPin size={16} className="text-green-600" />
-                    <span>
-                      Register your business to featured{" "}
-                      <button
-                        onClick={() => navigate("/registerBusiness")}
-                        className="ml-2 px-3 py-1 rounded-full
+                <div className="text-[var(--surface)]">
+                  <p className="mb-1">
+                    <span className="font-medium">Category:</span>{" "}
+                    {vendor?.category}
+                  </p>
+                  <p className="mb-1">
+                    <span className="font-medium">Email:</span> {vendor?.email}
+                  </p>
+                  <p className="mb-1">
+                    <span className="font-medium">City:</span> {vendor?.city}
+                  </p>
+                  <p className="mb-1">
+                    <span className="font-medium">Contact:</span>{" "}
+                    {vendor?.phone}
+                  </p>
+                </div>
+                {!vendor?.isProfileComplete && (
+                  <div className="text-[var(--surface)]">
+                    {" "}
+                    <p className="flex items-center gap-2 mt-2">
+                      <MapPin size={16} className="text-green-600" />
+                      <span>
+                        Register your business to featured{" "}
+                        <button
+                          onClick={() => navigate("/registerBusiness")}
+                          className="ml-2 px-3 py-1 rounded-full
                  bg-gradient-to-r from-green-500 to-emerald-500
                  text-white text-xs font-semibold
                  hover:scale-105 transition-all duration-200
                  shadow-md hover:shadow-green-500/40"
-                      >
-                        Click here
-                      </button>
-                    </span>
-                  </p>
+                        >
+                          Click here
+                        </button>
+                      </span>
+                    </p>
+                  </div>
                 )}
               </div>
 
               <button
                 className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl flex items-center justify-center gap-2"
-                onClick={() => navigate("/registerBusiness")}
+                onClick={() => navigate("/vendor/update")}
               >
                 <Edit size={16} /> Edit Profile
               </button>
@@ -125,7 +135,7 @@ const VendorDashboard = () => {
                 </div>
                 <div className="bg-yellow-100 p-4 rounded-xl text-center">
                   <p className="text-2xl font-bold text-yellow-700">
-                    {vendor?.totalViews || 0}
+                    {vendor?.views || 0}
                   </p>
                   <p className="text-gray-600 text-sm">Views</p>
                 </div>

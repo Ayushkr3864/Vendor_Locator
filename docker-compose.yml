@@ -1,0 +1,80 @@
+# version: '3.9'
+
+# services:
+#  # mongodb service
+#  mongo_db:
+#   container_name: db_container
+#   image: mongo:latest
+#   restart: always
+#   volumes: 
+#     - mongo_data:/data/db
+
+#   #node js api service
+#  api: 
+#   container_name: Backend_api
+#   build: ./Backend 
+#   ports: 
+#   - "3000:3000"
+#   environment: 
+    # MONGO_URI: mongodb://mongo_db:27017
+    # DB_NAME: vendorLocatorDB
+    # CLOUDINARY_CLOUD_NAME: dibiligdk
+    # CLOUDINARY_API_KEY: 263115987836285
+    # CLOUDINARY_API_SECRET: 1g_-DlVaOoEnL9mTNFRN2H622hA
+    # JWT_SECRET: Ayu977390
+#   depends_on:
+#     - mongo_db
+#   frontend:
+#     container_name: frontend
+#     build: ./Frontend 
+#     ports:
+#       5173:5173
+#     environment:
+#       VITE_BACKEND_URL: http://localhost:3000/api
+#     depends_on:
+#       - api
+
+# volumes:
+#   mongo_data:
+
+# version: '3.9'
+services:
+  mongo_db:
+    container_name: db_container
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+   #node api service
+  api: 
+    container_name: api_container
+    build: ./Backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./Backend/.env.docker
+    depends_on:
+      - mongo_db
+    networks:
+      - app-network
+  frontend: 
+    container_name: frontend_container
+    build: ./Frontend
+    ports:
+      - "5173:5173"
+    environment:
+        VITE_BACKEND_URL: http://localhost:3000/api
+    depends_on:
+      - api
+    networks:
+      - app-network
+  
+volumes:
+  mongo_data:
+networks:
+  app-network:
+    driver: bridge 

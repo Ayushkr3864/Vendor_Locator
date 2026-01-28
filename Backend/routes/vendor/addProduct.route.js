@@ -1,17 +1,18 @@
-const express = require("express")
+const express = require("express");
 const isLoggedIn = require("../../middleware/isLoggedIn");
 const isVendor = require("../../middleware/vendorAuth");
 const addProduct = require("../../controllers/vendor/addProduct.controller");
 const productUpload = require("../../middleware/productImage");
-
-const app = express.Router()
+const { apiLimiter } = require("../../rateLimiter/limiter");
+const app = express.Router();
 
 app.post(
   "/",
+  apiLimiter,
   isLoggedIn,
   isVendor,
   productUpload.single("productImage"),
   addProduct,
 );
 
-module.exports = app
+module.exports = app;

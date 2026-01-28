@@ -12,12 +12,15 @@ import UserDashboard from "./pages/user/UserDash";
 import Product from "./pages/vendor/Product";
 import ListVendor from "./pages/user/ListVendort";
 import Protected from "./components/Protected";
-import VendorShopForm from "./pages/vendor/UpdateProfile";
+import VendorShopForm from "./pages/vendor/RegisterBusiness";
 import ShowProduct from "./pages/vendor/ShowProduct";
 import VendorDetails from "./pages/vendor/VendorDetails"
 import FeaturesPage from "./pages/FeaturesPage"
 import VendorLanding from "./pages/vendor/LandingPage"
 import UserLanding from "./pages/user/userLanding"
+import UserProtected from "./pages/user/UserProtected";
+import UpdateDetails from "./pages/vendor/UpdateDetails";
+import ChatPage from "./pages/ChatPage"
 function App() {
   return (
     <>
@@ -27,7 +30,9 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/about" element={<About />}></Route>
         <Route path="/vendor" element={<VendorLanding />} />
-        <Route path="/user" element={<UserLanding/>}></Route>
+        <Route path="/user" element={<UserLanding />}></Route>
+        <Route path="/vendor/update" element={<UpdateDetails />} />
+        <Route path="/chat" element={<ChatPage/>}></Route>
         <Route
           path="/vendorDash"
           element={
@@ -63,7 +68,14 @@ function App() {
             </Protected>
           }
         ></Route>
-        <Route path="/explore/vendor" element={<ListVendor />}></Route>
+        <Route
+          path="/explore/vendor"
+          element={
+            <UserProtected>
+              <ListVendor />
+            </UserProtected>
+          }
+        ></Route>
         <Route path="*" element={<Error />}></Route>
       </Routes>
     </>

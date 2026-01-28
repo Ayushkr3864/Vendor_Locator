@@ -1,32 +1,53 @@
 const vendorDB = require("../../models/vendorDB");
+
 const updateProfile = async (req, res) => {
   try {
-    const  vendorId  = req.params.id;
-    console.log(vendorId);
-     console.log("Request File:", req.file);
-      if (!vendorId) {
-        return res.status(400).json({ message: "Vendor ID is required" });
+    const updateFields = {};
+    const { newEmail, newAddress, newPhone, newName } = req.body;
+
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    if (newEmail) updateFields.email = newEmail;
+    if (newName) updateFields.name = newName;
+    if (newAddress) updateFields.address = newAddress;
+    if (newPhone) updateFields.phone = newPhone;
+
+    if (req.file) {
+      updateFields.vendorimg = req.file.path; // or Cloudinary URL
     }
-    const { category, address, description, businessName } = req.body;
-    console.log(req.body);
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No fields provided to update",
+      });
+    }
+
     const updatedVendor = await vendorDB.findByIdAndUpdate(
-      vendorId,
-      {
-        category,
-        address,
-        description,
-        isActive: true,
-        isProfileComplete: true,
-        shopImage: req.file?.path,
-        businessName,
-      },
-      { new: true, runValidators: true },
+      req.user.id,
+      { $set: updateFields },
+      { new: true },
     );
-    console.log(updatedVendor);
-    if (!updatedVendor) return res.status(404).json({ message: "vendor not found" })
-    res.status(200).json({updatedVendor:updatedVendor})
-  } catch (e) {
-    res.status(500).json({ message: e.message });
+
+    if (!updatedVendor) {
+      return res.status(404).json({
+        success: false,
+        message: "Vendor not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      data: updatedVendor,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
   }
 };
 

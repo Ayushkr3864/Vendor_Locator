@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {useNavigate} from "react-router-dom"
 import Toast from "../components/Toast";
 import SuccessMessage from "./success";
-
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 console.log(API_URL);
 
@@ -16,6 +16,7 @@ const Register = () => {
   const [user, setUser] = useState(true);
   const [vendor, setVendor] = useState(false);
   const [preview, setPreview] = useState(null);
+   const [showPassword, setShowPassword] = useState(false);
   const [vendorForm, setVendorForm] = useState({
     name: "",
     phone: "",
@@ -256,7 +257,6 @@ const handleUserSubmit = async (e) => {
                 >
                   User
                 </button>
-
                 <button
                   onClick={() => {
                     setVendor(true);
@@ -331,14 +331,29 @@ const handleUserSubmit = async (e) => {
                       placeholder="Email"
                       className={inputClass}
                     />
-                    <input
-                      type="password"
-                      name="password"
-                      value={userForm.password}
-                      onChange={handleUserChange}
-                      placeholder="Password"
-                      className={inputClass}
-                    />
+                    <div className="flex relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="password"
+                        value={userForm.password}
+                        onChange={handleUserChange}
+                        placeholder="Password"
+                        className={`${inputClass} `}
+                      />
+                      {userForm.password && (
+                        <button
+                          className="absolute right-2 top-1/5 "
+                          onClick={() => setShowPassword(!showPassword)}
+                          type="button"
+                        >
+                          {showPassword ? (
+                            <AiFillEye size={30} className="" />
+                          ) : (
+                            <AiFillEyeInvisible size={30} />
+                          )}
+                        </button>
+                      )}
+                    </div>
 
                     <motion.button
                       className={`w-full rounded-xl bg-[#0F2B52] py-3 ${

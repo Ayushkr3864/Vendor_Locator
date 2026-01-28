@@ -17,11 +17,11 @@ const vendorLogin = async (req, res) => {
     }
     const ismatch = await bcrypt.compare(password, vendor.password);
     if (!ismatch) return res.status(401).json({ message: "invalid credentials" })
-    const payload = { role: "vendor", id: vendor._id };
+    const payload = { role: "vendor", id: vendor._id,email:vendor.email };
     const token = jwt.sign(payload, jwtSecret, { expiresIn: "2h" });
     res.cookie("Token", token, {
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-      httpOnly: true, // not accessible via JS
+      maxAge: 24 * 60 * 60 * 1000, 
+      httpOnly: true, 
       secure: true,
     });
     res.status(200).json({message:"login successful",isauthenticated:true})

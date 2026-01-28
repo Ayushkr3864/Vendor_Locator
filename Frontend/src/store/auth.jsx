@@ -13,29 +13,27 @@ export const AuthProvider = ({ children }) => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [vendor, setVendor] = useState(null);
+  const [role,setRole] = useState(null)
 
-  const checkAuth = useCallback(async () => {
-    setLoading(true); // Start loading
-    try {
-      const res = await fetch(`${api}/authenticate`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        throw new Error("Authentication check failed");
-      }
-      const data = await res.json();
-      setIsAuthenticated(data.isauthenticate);
-      return data; // Return the data
-    } catch (e) {
-      console.error("Auth check error:", e.message);
-      setIsAuthenticated(false);
-      return { isauthenticate: false }; // Return consistent object structure
-    } finally {
-      setLoading(false); 
-    }
-  }, []);
+ const checkAuth = useCallback(async () => {
+     try {
+       const res = await fetch(`${api}/authenticate`, {
+         method: "GET",
+         credentials: "include",
+       });
+       if (!res.ok) throw new Error("Auth failed");
+       const data = await res.json();
+       setIsAuthenticated(!!data.isauthenticate)
+       setRole(data.role)
+       console.log(data.role);
+       
+     } catch (err) {
+       console.error(err);
+       setIsAuthenticated(false);
+     } finally {
+       setLoading(false);
+     }
+   }, []);
 
   const Logout = async () => {
     try {
@@ -108,7 +106,7 @@ export const AuthProvider = ({ children }) => {
 
        const res = await fetch(`${api}/user/get`, {
          method: "GET",
-         credentials: "include", // 👈 cookie
+         credentials: "include", 
        });
 
        const data = await res.json();
@@ -126,9 +124,9 @@ export const AuthProvider = ({ children }) => {
        setLoading(false);
      }
    }, []);
-  useEffect(() => {
-    getLoggedInUser()
-  },[getLoggedInUser])
+  // useEffect(() => {
+  //   getLoggedInUser()
+  // },[getLoggedInUser])
   return (
     <authContext.Provider
       value={{
@@ -147,6 +145,7 @@ export const AuthProvider = ({ children }) => {
         settoastType,
         totalProducts,
         getLoggedInUser,
+        role,
       }}
     >
       {children}

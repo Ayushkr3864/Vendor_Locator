@@ -1,20 +1,25 @@
 const express = require("express");
 const app = express();
+const http = require("http")
 const cookieParser = require("cookie-parser")
+const server = http.createServer(app);
 require("dotenv").config();
+const initSocket = require("./socket");
 const connectDB = require("./config/db")
+connectDB();
 const vendorRegister = require("./routes/vendor/vendorRegister.route")
 const loginVendor = require("./routes/vendor/vendorLogin.route")
 const vendorProfile = require("./routes/vendor/vendorProfile.route")
 const Logout = require("./routes/vendor/Logout.route")
 const Authenticate = require("./routes/vendor/Authenticate.route");
-const updateProfile = require("./routes/vendor/updateProfile.route");
+const registerBusiness = require("./routes/vendor/registerBusiness.route");
 const addProduct = require("./routes/vendor/addProduct.route")
 const fetchProduct = require("./routes/vendor/fetchProduct.route")
 const featuredVendor = require("./routes/vendor/featuredVendor.route")
-const vendorDetails = require("./routes/vendor/vendorDetails.route")
+const vendorDetails = require("./routes/user/vendorDetails.route")
 const deleteProduct = require("./routes/vendor/deleteProduct.route")
 const userRegister = require("./routes/user/userRegister.route")
+const updateProfile = require("./routes/vendor/updateProfile.route")
 require("./config/cloudinary");
 const cors = require("cors");
 app.use(express.json());
@@ -27,7 +32,7 @@ app.use(
       credentials:true
   })
 );
-connectDB();
+
 app.get("/", (req, res) => {
     res.send("Vendor Locator API is running");
 })
@@ -36,13 +41,18 @@ app.use("/api/vendor/login", loginVendor)
 app.use("/api/vendorProfile", vendorProfile)
 app.use("/api/Logout", Logout)
 app.use("/api/authenticate", Authenticate)
-app.use("/api", updateProfile)
+app.use("/api", registerBusiness)
 app.use("/api/addProduct", addProduct)
 app.use("/api/vendor/products", fetchProduct);
 app.use("/api/featuredVendor", featuredVendor)
 app.use("/api", vendorDetails)
 app.use("/api", deleteProduct)
+app.use("/api/chat", require("./routes/chats/chat.route"));
+app.use("/api",updateProfile)
+
 // user route
-app.use("/api/user",userRegister)
-app.listen(3000,()=>{console.log("Vendor Locator API is running at port 3000");
+app.use("/api/user", userRegister)
+
+initSocket(server)
+server.listen(3000,()=>{console.log("Vendor Locator API is running at port 3000");
 })
